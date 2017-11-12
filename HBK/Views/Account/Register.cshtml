@@ -1,0 +1,246 @@
+﻿@model HBK.Models.RegisterViewModel
+@{
+    ViewBag.Title = Resources.Langues.BENRegistration;
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-offset-2 col-md-8">
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", @enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @*<h4>Create a new account.</h4>
+                <hr />
+                @Html.ValidationSummary("", new { @class = "text-danger" })*@
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="Email">@Resources.Langues.Email: <span class="RequireText">*</span></label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="Password">@Resources.Langues.Password: <span class="RequireText">*</span></label>
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="ConfirmPassword">@Resources.Langues.ConfirmPass: <span class="RequireText">*</span></label>
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="FirstName">@Resources.Langues.FirstName: <span class="RequireText">*</span></label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="LastName">@Resources.Langues.LastName: <span class="RequireText">*</span></label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="Email">@Resources.Langues.Tel: <span class="RequireText">*</span></label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Tel, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="Address">@Resources.Langues.Address: </label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="Country">@Resources.Langues.Country: <span class="RequireText">*</span></label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.Country, new SelectList(ViewBag.ListCountries, "Value", "Text"), Resources.Langues.PleaseSelect, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="Photo">@Resources.Langues.Photo: <span class="RequireText">*</span></label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Photo, new { @class = "form-control", @accept = "image/gif, image/jpg,image/png,image/jpeg", @type = "file" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="SpecialtyType">@Resources.Langues.SpecialtyType: <span class="RequireText">*</span></label>
+                <div class="col-md-5">
+                    @Html.DropDownListFor(m => m.MainSpecialtyType, new SelectList(ViewBag.ListType, "Value", "Text"), Resources.Langues.PleaseSelect, new { @class = "form-control" })
+                </div>
+                <div class="col-md-5">
+                    @Html.DropDownListFor(m => m.SpecialtyType, Enumerable.Empty<SelectListItem>(), Resources.Langues.PleaseSelect, new { @class = "form-control", @disabled = "true" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="SNSSite">@Resources.Langues.SNSSite:</label>
+                <label class="col-md-1" style="color: darkgray; text-align:right;font-size: medium;">
+                    http://
+                </label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.SNSSite, new { @class = "form-control" })   
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="Recommender">@Resources.Langues.Recommender: <span class="RequireText">*</span></label>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.Recommender, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    <input type="button" class="btn btn-default btn-block" id="btnSearch" value="@Resources.Langues.Search" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="Introduction">@Resources.Langues.Introduction: <span class="RequireText">*</span></label>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.Introduction, new { @class = "form-control", @rows = "7" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="Career">@Resources.Langues.Career: <span class="RequireText">*</span></label>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.Career, new { @class = "form-control", @rows = "7" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="CareerDuration">@Resources.Langues.CareerDuration: <span class="RequireText">*</span></label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.CareerDuration, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-4 col-md-2">
+                    <input id="btnSubmit" type="submit" class="btn btn-success btn-block" value="@Resources.Langues.CreateAcc" />
+
+                </div>
+                <div class="col-md-2">
+                    <input type="button" class="btn btn-default btn-block" value="@Resources.Langues.Cancel" onclick="location.href='@Url.Action("Login", "Account")'" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $("#SNSSite").on("click blur keyup paste", function () {
+            var url = ($(this).val().replace("https://", ""));
+            $(this).val(url);
+            var url1 = ($(this).val().replace("http://", ""));
+            $(this).val(url1);
+        })
+
+
+        var isCheckRecommender = false;
+
+        $('#Photo').on('change', function (e) {
+            var val = $(this).val();
+            val = val.substring(val.lastIndexOf('.') + 1).toLowerCase();
+            if (val == "gif" || val == "jpg" || val == "png" || val == "jpeg") {
+            }
+            else {
+                if ($('#Photo').val() != "") {
+                    bootbox.alert('@Resources.Langues.FileMustBeImage');
+                }
+                $('#Photo').val('');
+            }
+        });
+
+        $("#btnSearch").click(function () {
+            $.blockUI();
+            $.post('@Url.Action("DoesEmailExist", "Account")', { email: $("#Recommender").val() }, function (result) {
+                if (!result) {
+                    isCheckRecommender = true;
+                    //console.log("test: ", isCheckRecommender);
+                    //console.log("result", result);
+                    bootbox.confirm({
+                        message: $("#FirstName").val() + " " + $("#LastName").val() + " " + '@Resources.Langues.IsThisCorrect',
+                        buttons: {
+                            confirm: {
+                                label: 'Yes',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'No',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function (callback) {
+                            if (!callback) {
+                                isCheckRecommender = false;
+                                //console.log("test: ", isCheckRecommender);
+                                $("#Recommender").val("");
+                            }
+                        }
+                    });
+                } else {
+                    bootbox.alert($("#FirstName").val() + " " + $("#LastName").val() + " " + '@Resources.Langues.NotRegister');
+                    $("#Recommender").val("");
+                    isCheckRecommender = false;
+                }
+            })
+            .fail(function () {
+                bootbox.alert('@Resources.Langues.ContactAdmin');
+                $("#Recommender").val("");
+            })
+            .always(function () {
+                $.unblockUI();
+            });
+        });
+        $(function () {
+            $("#MainSpecialtyType").change(function () {
+                var selectedType = $('option:selected', this).val();
+                var SpecialtyType = $("#SpecialtyType");
+                if (selectedType) {
+                    $.blockUI();
+                    $.post('@Url.Action("GetSpecialtyType", "Account")', { MainSpecialtyType: selectedType }, function (result) {
+                        $.each(result, function() {
+                            SpecialtyType.append($("<option />").val(this.value).text(this.text));
+                        });
+                        SpecialtyType.prop("disabled", false);
+                    })
+                    .fail(function () {
+                        bootbox.alert('@Resources.Langues.ContactAdmin');
+                    })
+                    .always(function () {
+                        $.unblockUI();
+                    });
+                } else {
+                    SpecialtyType.empty();
+                    SpecialtyType.append($("<option />").val("").text('@Resources.Langues.PleaseSelect'));
+                    SpecialtyType.prop("disabled", true);
+                }
+            });
+        });
+
+        $('#Recommender').change(function () {
+            isCheckRecommender = false;
+        });
+
+        $('form').submit(function (e) {
+            if (!isCheckRecommender) {
+                var isValid = $('form').valid();
+                if (isValid) {
+                    bootbox.alert('@Resources.Langues.PleaseCheckReferrer');
+                }
+                @*if ($('#Email').val().trim() != "" && $('#Password').val().trim() != "" && $('#ConfirmPassword').val().trim() != ""
+                    && $('#FirstName').val().trim() != "" && $('#LastName').val().trim() != "" && $('#Tel').val().trim() != ""
+                    && $('#Introduction').val().trim() != "" && $('#Career').val().trim() != "" && $('#CareerDuration').val().trim() != ""
+                    && $('#Country').val().trim() != "" && $('#MainSpecialtyType').val().trim() != "" && $('#SpecialtyType').val().trim() != "") {
+                    bootbox.alert('@Resources.Langues.PleaseCheckReferrer');
+                }*@
+                e.preventDefault();
+            }
+        });
+    </script>
+}

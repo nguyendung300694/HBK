@@ -1,0 +1,35 @@
+﻿@model HBK.Models.CommentViewModel
+
+@if (Model.IsModifier)
+{
+    <li class="left clearfix" id="@Model.CommeId">
+
+        <div class='pull-right modify_@Model.CommeId'>
+            <button class="btn btn-info" type="button" onclick="EditComment(@Model.CommeId)">@Resources.Langues.Edit</button>
+            &nbsp;|&nbsp;
+            <button class="btn btn-danger" type="button" onclick="DeleteComment(@Model.CommeId)">@Resources.Langues.Delete</button>
+        </div>
+
+        <div class='pull-right Save_@Model.CommeId' style="display:none;">
+            <button class="btn btn-success" type="button" onclick="SaveComment(@Model.CommeId)">@Resources.Langues.Save</button>
+        </div>
+
+        <span class="chat-img pull-left">
+            <img src="@Url.Content(Model.Avatar)" alt="@Model.Name" class="img-circle img-responsive" style="max-width:50px;" />
+        </span>
+        <div class="chat-body clearfix">
+            <div class="header">
+                <strong class="primary-font">@Model.Name</strong>
+            </div>
+            <p class='modify_@Model.CommeId' id='Content_@Model.CommeId'>
+                @Model.Content
+            </p>
+            <textarea class='form-control custTextarea Save_@Model.CommeId' id='Input_@Model.CommeId' rows="4" style="display:none;">@Model.Content</textarea>
+            <br />
+            <small class="text-muted">
+                <span class="glyphicon glyphicon-time"></span>@Model.Time
+            </small>
+        </div>
+    </li>
+}
+

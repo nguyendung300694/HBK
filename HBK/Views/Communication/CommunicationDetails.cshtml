@@ -1,0 +1,402 @@
+﻿@model HBK.Models.CommunicationDetailsViewModel
+@{
+    ViewBag.Title = Resources.Langues.Communication;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    bool selectInfor, selectComment = selectInfor = false;
+    if (ViewBag.From != null)
+    {
+        selectComment = true;
+    }
+    else
+    {
+        selectInfor = true;
+    }
+}
+<style type="text/css">
+    .chat {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        .chat li {
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px dotted #B3A9A9;
+        }
+
+            .chat li.left .chat-body {
+                margin-left: 60px;
+            }
+
+            .chat li.right .chat-body {
+                margin-right: 60px;
+            }
+
+
+            .chat li .chat-body p {
+                margin: 0;
+                color: #777777;
+            }
+
+        .panel .slidedown .glyphicon, .chat .glyphicon {
+            margin-right: 5px;
+        }
+
+    .panel-body {
+        overflow-y: scroll;
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+    }
+
+    ::-webkit-scrollbar {
+        width: 12px;
+        background-color: #F5F5F5;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: #555;
+    }
+
+    @@media (min-width: 992px) {
+        .CommentAttachment {
+            padding-top: 37px;
+        }
+
+        .row.row-eq-height {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+        }
+    }
+
+    .custTextarea {
+        width: 98% !important;
+    }
+</style>
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-12">
+        <img class="img-rounded img-responsive" src="@Url.Content(Model.ImageURL)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <br />
+        <br />
+        <div class="row row-eq-height">
+            <div class="col-md-7">
+                @using (Html.BeginForm("WriteNewComment", "Communication", FormMethod.Post, new { role = "form", @enctype = "multipart/form-data", @id = "WriteNewCommentForm" }))
+            {
+                    @(Html.Kendo().TabStrip()
+      .Name("tabstrip")
+      .Animation(animation =>
+          animation.Open(effect =>
+              effect.Fade(FadeDirection.In)))
+      .Items(tabstrip =>
+      {
+      tabstrip.Add().Text(Resources.Langues.Information).Selected(selectInfor).Content(
+        @<text>
+            @if (Model.IsModifier)
+            {
+                <div class="RightText">
+                    <a class="btn btn-info" href="@Url.Action("Edit", new { @id = Model.CommuId })">@Resources.Langues.Edit</a>
+                    &nbsp;|&nbsp;
+                    <button class="btn btn-danger" id="btnCommunDel" type="button">@Resources.Langues.Delete</button>
+                </div>
+            }
+            <p>
+                @(Html.Kendo().Editor()
+                                  .Name("Information")
+                                  .Encode(true)
+                                  .Tools(tools => tools.Clear())
+                                  .HtmlAttributes(new { style = "height:500px;", aria_label = "editor" })
+                                //.Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                //.ImageBrowser(imageBrowser => imageBrowser
+                                //    .Image("~/Content/UserFiles/Images/{0}")
+                                //    .Read("Read", "ImageBrowser")
+                                //    .Create("Create", "ImageBrowser")
+                                //    .Destroy("Destroy", "ImageBrowser")
+                                //    .Upload("Upload", "ImageBrowser")
+                                //    .Thumbnail("Thumbnail", "ImageBrowser")
+                                //)
+                                .Value(@Model.Information)
+                )
+            </p>
+        </text>
+                );
+
+      tabstrip.Add().Text(Resources.Langues.Comment).Selected(selectComment).Content(
+        @<text>
+
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.CommuId)
+            <div class="panel panel-primary">
+                @*<div class="panel-heading"></div>*@
+                <div class="panel-body" style="height: 500px;">
+                    <ul class="chat" id="CommentContainer">
+                        @foreach (var Commment in Model.Commments)
+                        {
+                            @Html.Partial("_CommentLayout", Commment);
+                            @*<li class="left clearfix">
+                                @if (Commment.IsModifier)
+                                {
+                                    <div class='pull-right modify_@Commment.CommeId'>
+                                        <button class="btn btn-info" type="button" onclick="EditComment(@Commment.CommeId)">@Resources.Langues.Edit</button>
+                                        &nbsp;|&nbsp;
+                                        <button class="btn btn-danger" type="button" onclick="DeleteComment(@Commment.CommeId)">@Resources.Langues.Delete</button>
+                                    </div>
+
+                                    <div class='pull-right Save_@Commment.CommeId' style="display:none;">
+                                        <button class="btn btn-success" type="button" onclick="SaveComment(@Commment.CommeId)">@Resources.Langues.Save</button>
+                                    </div>
+                                }
+                                <span class="chat-img pull-left">
+                                    <img src="@Url.Content(Commment.Avatar)" alt="@Commment.Name" class="img-circle img-responsive" style="max-width:50px;" />
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font">@Commment.Name</strong>
+                                    </div>
+                                    <p class='modify_@Commment.CommeId' id='Content_@Commment.CommeId'>
+                                        @Commment.Content
+                                    </p>
+                                    <textarea class='form-control custTextarea Save_@Commment.CommeId' id='Input_@Commment.CommeId' rows="4" style="display:none;">@Commment.Content</textarea>
+                                    <br />
+                                    <small class="text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>@Commment.Time
+                                    </small>
+                                </div>
+                            </li>*@
+                        }
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <div class="input-group-addon" id="UploadBtn">+</div>
+                        @Html.TextAreaFor(m => m.NewComment, new { @class = "form-control", @rows = "2", @placeholder = Resources.Langues.TypeComment })
+                        <span class="input-group-btn">
+                            @*<input type="submit" class="btn btn-warning btn-lg" value="@Resources.Langues.Send" />*@
+                            <input type="submit" id="btnAddComment" class="btn btn-warning btn-lg" value="@Resources.Langues.Send" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+            @Html.TextBoxFor(m => m.NewCommentAttachment, new { @style = "opacity:0; height:0px;width:0px;display:none;", @type = "file" })
+
+        </text>
+         );
+      }))
+                }
+            </div>
+            <div class="col-md-2 CommentAttachment">
+                <div class="panel panel-primary" style="height:100%;margin-bottom:0px;">
+                    <div class="panel-body" id="FileAttachContainer">
+                        @foreach (var item in Model.CommentAttachments)
+                        {
+                            <a id="@item.FileID" href="@Url.Content(item.DownloadUrl)">@item.Filename</a><br />
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 CommentAttachment">
+                <div class="panel panel-primary" style="height:100%;margin-bottom:0px;">
+                    <div class="panel-body">
+                        @foreach (var item in Model.CommunicationAttachments)
+                        {
+                            if (item.isFile)
+                            {
+                                <a href="@Url.Content(item.Url)">@item.Filename (@(item.FileSize / 8192)KB)</a><br />
+                            }
+                            else
+                            {
+                                <a href="@Url.Content(item.Url)" data-fancybox>
+                                    <img class="img-thumbnail img-responsive" src="@Url.Content(item.Url)" />
+                                </a><br />
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        @*$("#btnAddComment").click(function () {
+            //alert('xxxx');
+            e.preventDefault();
+
+            $.ajax({
+                type: 'post',
+                url: "@Url.Action("WriteNewComment", "Communication")",
+                data: $('form').serialize(),
+                cache:false,
+                success: function (html) { $("#CommentContainer").append(html); }
+            });
+        });*@
+
+        $("#WriteNewCommentForm").submit(function(e)
+        {
+
+            var formObj = $(this);
+            var formURL = formObj.attr("action");
+            //console.log("URL: ",formURL);
+            var formData = new FormData(this);
+            //console.log("Data : ",formData);
+            $.ajax({
+                url: formURL,
+                type: 'POST',
+                data:  formData,
+                mimeType:"multipart/form-data",
+                contentType: false,
+                cache: false,
+                processData:false,
+                dataType: "Json",
+                success: function (html) {
+                    $('#NewComment').val('');
+                    $("#CommentContainer").append(html.Comment);
+                    //console.log("File: ",html.CommentAttach);
+                    if(html.CommentAttach != null){
+                        //console.log("File: ",html.CommentAttach);
+                        $('#FileAttachContainer').append("<a id="+html.CommentAttach.FileID+" href="+html.CommentAttach.DownloadUrl+">"+html.CommentAttach.Filename+"</a><br />");
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown)
+                {
+                }
+            });
+            e.preventDefault(); //Prevent Default action.
+            //e.unbind();
+        });
+        $("#multiform").submit();
+
+
+        $(function () {
+            $($('#Information').data().kendoEditor.body).attr('contenteditable', false);
+        })
+
+        var CommuId = @Model.CommuId;
+        //var CommunicationPage = ;
+        $("#UploadBtn").click(function () {
+            $("#NewCommentAttachment").click();
+        });
+        $("[data-fancybox]").fancybox({
+            // Options will go here
+        });
+
+        $("#btnCommunDel").click(function () {
+            bootbox.confirm({
+                message: '@Resources.Langues.AreYouSure',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-danger'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-success'
+                    }
+                },
+                callback: function (callback) {
+                    if (callback) {
+                        $.blockUI();
+                        $.post('@Url.Action("Delete", "Communication")',{ id:CommuId }, function (result) {
+                            if (result) {
+                                window.location.href = '@Url.Action("Index", "Home")';
+                            }else{
+                                bootbox.alert('@Resources.Langues.ContactAdmin');
+                            }
+                        })
+                        .fail(function () {
+                            bootbox.alert('@Resources.Langues.ContactAdmin');
+                        })
+                        .always(function () {
+                            $.unblockUI();
+                        });
+                    }
+                }
+            });
+            
+        });
+        function EditComment(CommeId) {
+            $(".modify_" + CommeId).hide();
+            $(".Save_" + CommeId).show();
+        }
+
+        function SaveComment(CommeId) {
+            var newComment = $("#Input_" + CommeId).val();
+            if (!newComment.trim()) {
+                $("#Input_" + CommeId).addClass('input-validation-error');
+            }else {
+                $.blockUI();
+                $.post('@Url.Action("EditComment", "Communication")',{ id:CommeId, Content: newComment}, function (result) {
+                    if (result) {
+                        $("#Input_" + CommeId).removeClass('input-validation-error');
+                        $(".modify_" + CommeId).show();
+                        $(".Save_" + CommeId).hide();
+                        $("#Content_" + CommeId).text(newComment);
+                    }else{
+                        bootbox.alert('@Resources.Langues.ContactAdmin');
+                    }
+                })
+                .fail(function () {
+                    bootbox.alert('@Resources.Langues.ContactAdmin');
+                })
+                .always(function () {
+                    $.unblockUI();
+                });
+            }
+            
+        }
+        function DeleteComment(CommeId) {
+            bootbox.confirm({
+                message: '@Resources.Langues.AreYouSure',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-danger'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-success'
+                    }
+                },
+                callback: function (callback) {
+                    if (callback) {
+                        $.blockUI();
+                        $.post('@Url.Action("DeleteComment", "Communication")',{ id:CommeId }, function (result) {
+                            if (result.success) {
+                                $('#CommentContainer').find('li[id='+CommeId+']').remove();
+                                if(result.CommentAttach != null)
+                                {
+                                    $('#FileAttachContainer').find('a[id='+result.CommentAttach.FileID+']').remove();
+                                }
+                                //window.location.href = result.RedirectURL;
+                            }else{
+                                bootbox.alert('@Resources.Langues.ContactAdmin');
+                            }
+                        })
+                        .fail(function () {
+                            bootbox.alert('@Resources.Langues.ContactAdmin');
+                        })
+                        .always(function () {
+                            $.unblockUI();
+                        });
+                    }
+                }
+            });
+            
+        }
+    </script>
+}

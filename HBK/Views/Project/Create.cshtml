@@ -1,0 +1,469 @@
+﻿@model HBK.Models.CreateProjectViewModel
+@{
+    ViewBag.Title = Resources.Langues.CreateProject;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    bool selectInfor, selectMember = selectInfor = false;
+    string action = (string)ViewBag.From;
+    //bool isAdmin = ViewBag.IsAdmin;
+    if (false)
+    //if (action.Equals("Member"))
+    {
+        selectMember = true;
+    }
+    else
+    {
+        selectInfor = true;
+    }
+}
+<h2>@ViewBag.Title</h2>
+<style>
+    .k-animation-container, .k-animation-container *, .k-animation-container :after, .k-block .k-header, .k-list-container, .k-widget, .k-widget *, .k-widget :before {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .VerticalText {
+        display: flex;
+        justify-content: center; /* align horizontal */
+        align-items: center;
+    }
+</style>
+<script type="text/x-kendo-tmpl" id="single-contact-template">
+    <div class="row VerticalText" uid="#: uid #" email="#: Email #" MemberId="#: MemberId #">
+        <div class="col-md-2">
+            <img class="img-responsive img-thumbnail" src="#:Avatar#" alt="#:Fullname # @Resources.Langues.Photo" />
+        </div>
+        <div class="col-md-10">#:Fullname# (#:Country#, #:SpecialtyType#)</div>
+    </div>
+</script>
+
+<script type="text/x-kendo-tmpl" id="double-member-template">
+    <div class="row VerticalText" uid="#: uid #" email="#: Email #">
+        <div class="col-md-2">
+            <img class="img-responsive img-thumbnail" src="#:Avatar#" alt="#:Fullname # @Resources.Langues.Photo" />
+        </div>
+        <div class="col-md-10">#:Fullname# (#:Country#, #:SpecialtyType#)</div>
+    </div>
+</script>
+@(Html.Kendo().TabStrip()
+      .Name("tabstrip")
+      .Animation(animation =>
+          animation.Open(effect =>
+              effect.Fade(FadeDirection.In)))
+      .Items(tabstrip =>
+      {
+      tabstrip.Add().Text(Resources.Langues.Information).Selected(selectInfor).Content(
+        @<text>
+            <form action="@Url.Action("Create", "Project")" class="form-horizontal" enctype="multipart/form-data" id="myform" method="post" role="form">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.CompanyId)
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="ProjectName">@Resources.Langues.ProjectName: <span class="RequireText">*</span></label>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(m => m.ProjectName, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-1">
+                        <input type="button" class="btn btn-success btn-block saveBtn" value="@Resources.Langues.Save" />
+                    </div>
+                    <div class="col-md-1">
+                        <input type="button" class="btn btn-default btn-block CancelBtn" value="@Resources.Langues.Cancel" />
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="StartDate">@Resources.Langues.ProjectPeriod: <span class="RequireText">*</span></label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(m => m.StartDate, new { @style = "width: 100%" })
+                    </div>
+                    <div class="col-md-1 text-center">~</div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(m => m.EndDate, new { @style = "width: 100%" })
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="Category">@Resources.Langues.Category: <span class="RequireText">*</span></label>
+                    <div class="col-md-7">
+                        @Html.DropDownListFor(m => m.Category, new SelectList(ViewBag.Categories, "Value", "Text"), Resources.Langues.PleaseSelect, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="Category">@Resources.Langues.ProjectSize: <span class="RequireText">*</span></label>
+                    <div class="col-md-7">
+                        @Html.DropDownListFor(m => m.ProjectSize, new SelectList(ViewBag.ProjectSize, "Value", "Text"), Resources.Langues.PleaseSelect, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="ConfirmPassword">@Resources.Langues.Client: <span class="RequireText">*</span></label>
+                    <div class="col-md-7">
+                        @Html.DropDownListFor(m => m.Client, new SelectList(ViewBag.Client, "Value", "Text"), Resources.Langues.PleaseSelect, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="ConfirmPassword">@Resources.Langues.ProjectStatus: <span class="RequireText">*</span></label>
+                    <div class="col-md-7">
+                        @Html.DropDownListFor(m => m.ProjectStatus, new SelectList(ViewBag.ListProjectStatus, "Value", "Text"), Resources.Langues.PleaseSelect, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="ProjectName">@Resources.Langues.ProjectAttachment: <span class="RequireText">*</span></label>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(m => m.ProjecAttachments, new { @class = "form-control", @type = "file" })
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(m => m.ProjectContent, new { @class = "form-control", @rows = "15" })
+                    </div>
+                </div>
+            </form>
+        </text>
+                );
+      tabstrip.Add().Text(Resources.Langues.Member).Selected(selectMember).Content(
+        @<text>
+            <div class="row" style="margin-bottom: 20px">
+                <div class="col-md-9"><h3>@Resources.Langues.Member</h3></div>
+                <div class="col-md-1">
+                    <input type="button" class="btn btn-success btn-block saveBtn" value="@Resources.Langues.Save" />
+                </div>
+                <div class="col-md-1">
+                    <input type="button" class="btn btn-default btn-block CancelBtn" value="@Resources.Langues.Cancel" />
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <input type="text" class="form-control SearchProjectMemberTxt" placeholder="@Resources.Langues.SearchPeople" />
+                    </div>
+                    @(Html.Kendo().ListView<HBK.Models.MemberViewModel>()
+                   .Name("ProjectMembers")
+                   .TagName("div")
+                   .ClientTemplateId("single-contact-template")
+                   .DataSource(dataSource => dataSource
+                       .Model(model => model.Id("Email"))
+                       .Read(read => read.Action("Members_Read", "Project", new { PrjctId = (Model != null ? Model.PrjctId : 0) }))
+                   )
+                   .Selectable()
+                   //.Events(e => e
+                   //   .Change("onListViewSelectionChange")
+                   //   .DataBound("onListViewDataBound")
+                   //)
+                   .HtmlAttributes(new { @class = "contacts-list" })
+                    )
+                </div>
+                <div class="col-md-1">
+                    <button id="btnAdd" class="btn btn-block btn-success" style="margin-top: 40%">@Resources.Langues.Add</button>
+                    <button id="btnRemove" class="btn btn-block btn-warning" style="margin-top: 10%">@Resources.Langues.Remove</button>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <input type="text" class="form-control SearchAllMemberTxt" placeholder="@Resources.Langues.SearchPeople" />
+                    </div>
+                    @(Html.Kendo().ListView<HBK.Models.MemberViewModel>()
+                                   .Name("AllMembers")
+                                   .TagName("div")
+                                   .ClientTemplateId("double-member-template")
+                                   .DataSource(dataSource => dataSource
+                                       .Model(model => model.Id("Email"))
+                                       .Read(read => read.Action("ReadAllMembers", "Project"))
+                                   )
+                                   .Selectable()
+                                   //.Events(e => e
+                                   //   .Change("onListViewSelectionChange")
+                                   //   .DataBound("onListViewDataBound")
+                                   //)
+                                   .HtmlAttributes(new { @class = "contacts-list" })
+                    )
+                </div>
+            </div>
+        </text>
+            );
+      }))
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            function startChange() {
+                var startDate = start.value(),
+                endDate = end.value();
+                if (startDate) {
+                    startDate = new Date(startDate);
+                    startDate.setDate(startDate.getDate());
+                    end.min(startDate);
+                } else if (endDate) {
+                    start.max(new Date(endDate));
+                } else {
+                    endDate = new Date();
+                    start.max(endDate);
+                    end.min(endDate);
+                }
+            }
+
+            function endChange() {
+                var endDate = end.value(),
+                startDate = start.value();
+
+                if (endDate) {
+                    endDate = new Date(endDate);
+                    endDate.setDate(endDate.getDate());
+                    start.max(endDate);
+                } else if (startDate) {
+                    end.min(new Date(startDate));
+                } else {
+                    endDate = new Date();
+                    start.max(endDate);
+                    end.min(endDate);
+                }
+            }
+            //function library language calendar
+            (function (window, undefined) {
+                kendo.cultures["ko-KR"] = {
+                    name: "ko-KR",
+                    numberFormat: {
+                        pattern: ["-n"],
+                        decimals: 2,
+                        ",": ",",
+                        ".": ".",
+                        groupSize: [3],
+                        percent: {
+                            pattern: ["-n %", "n %"],
+                            decimals: 2,
+                            ",": ",",
+                            ".": ".",
+                            groupSize: [3],
+                            symbol: "%"
+                        },
+                        currency: {
+                            name: "Korean Won",
+                            abbr: "KRW",
+                            pattern: ["-$n", "$n"],
+                            decimals: 0,
+                            ",": ",",
+                            ".": ".",
+                            groupSize: [3],
+                            symbol: "₩"
+                        }
+                    },
+                    calendars: {
+                        standard: {
+                            days: {
+                                names: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+                                namesAbbr: ["일", "월", "화", "수", "목", "금", "토"],
+                                namesShort: ["일", "월", "화", "수", "목", "금", "토"]
+                            },
+                            months: {
+                                names: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+                                namesAbbr: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                            },
+                            AM: ["오전", "오전", "오전"],
+                            PM: ["오후", "오후", "오후"],
+                            patterns: {
+                                d: "yyyy-MM-dd",
+                                D: "yyyy'년' M'월' d'일' dddd",
+                                F: "yyyy'년' M'월' d'일' dddd tt h:mm:ss",
+                                g: "yyyy-MM-dd tt h:mm",
+                                G: "yyyy-MM-dd tt h:mm:ss",
+                                m: "M'월' d'일'",
+                                M: "M'월' d'일'",
+                                s: "yyyy'-'MM'-'dd'T'HH':'mm':'ss",
+                                t: "tt h:mm",
+                                T: "tt h:mm:ss",
+                                u: "yyyy'-'MM'-'dd HH':'mm':'ss'Z'",
+                                y: "yyyy'년' M'월'",
+                                Y: "yyyy'년' M'월'"
+                            },
+                            "/": "-",
+                            ":": ":",
+                            firstDay: 0
+                        }
+                    }
+                }
+            })(this);
+            (function (window, undefined) {
+                kendo.cultures["en-AU"] = {
+                    name: "en-AU",
+                    numberFormat: {
+                        pattern: ["-n"],
+                        decimals: 2,
+                        ",": ",",
+                        ".": ".",
+                        groupSize: [3],
+                        percent: {
+                            pattern: ["-n%", "n%"],
+                            decimals: 2,
+                            ",": ",",
+                            ".": ".",
+                            groupSize: [3],
+                            symbol: "%"
+                        },
+                        currency: {
+                            name: "Australian Dollar",
+                            abbr: "AUD",
+                            pattern: ["-$n", "$n"],
+                            decimals: 2,
+                            ",": ",",
+                            ".": ".",
+                            groupSize: [3],
+                            symbol: "$"
+                        }
+                    },
+                    calendars: {
+                        standard: {
+                            days: {
+                                names: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                                namesAbbr: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                                namesShort: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+                            },
+                            months: {
+                                names: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                                namesAbbr: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+                            },
+                            AM: ["AM", "am", "AM"],
+                            PM: ["PM", "pm", "PM"],
+                            patterns: {
+                                d: "d/MM/yyyy",
+                                D: "dddd, d MMMM yyyy",
+                                F: "dddd, d MMMM yyyy h:mm:ss tt",
+                                g: "d/MM/yyyy h:mm tt",
+                                G: "d/MM/yyyy h:mm:ss tt",
+                                m: "MMMM d",
+                                M: "MMMM d",
+                                s: "yyyy'-'MM'-'dd'T'HH':'mm':'ss",
+                                t: "h:mm tt",
+                                T: "h:mm:ss tt",
+                                u: "yyyy'-'MM'-'dd HH':'mm':'ss'Z'",
+                                y: "MMMM yyyy",
+                                Y: "MMMM yyyy"
+                            },
+                            "/": "/",
+                            ":": ":",
+                            firstDay: 1
+                        }
+                    }
+                }
+            })(this);
+
+            //language calendar
+            var current = $(location).attr('pathname');
+            if (current.search("ko") == true) {
+                kendo.culture("ko-KR");
+            } else {
+                kendo.culture("en-AU");
+            }
+
+            var today = kendo.date.today();
+            var start = $("#StartDate").kendoDatePicker({
+                format: "yyyy-MM-dd",
+                change: startChange,
+                parseFormats: ["yyyy/MM/dd"]
+            }).data("kendoDatePicker");
+
+            var end = $("#EndDate").kendoDatePicker({
+                min: today,
+                format: "yyyy-MM-dd",
+                change: endChange,
+                parseFormats: ["yyyy/MM/dd"]
+            }).data("kendoDatePicker");
+
+            start.max(end.value());
+            end.min(start.value());
+
+
+            $('.SearchProjectMemberTxt').on('keyup', function (e) {
+                var text = $(e.target).val().toLowerCase();
+                var listView = $("#ProjectMembers").data("kendoListView");
+
+                var dataInView = listView.dataSource.view();
+                dataInView.forEach(function (item) {
+                    var row = $('div[data-uid="' + item.uid + '"]');
+                    if (item.Fullname.toLowerCase().indexOf(text) > -1) {
+                        row.show();
+                    } else {
+                        row.hide();
+                    }
+                });
+            });
+
+            $('.SearchAllMemberTxt').on('keyup', function (e) {
+                var text = $(e.target).val().toLowerCase();
+                var listView = $("#AllMembers").data("kendoListView");
+
+                var dataInView = listView.dataSource.view();
+                dataInView.forEach(function (item) {
+                    var row = $('div[data-uid="' + item.uid + '"]');
+                    if (item.Fullname.toLowerCase().indexOf(text) > -1) {
+                        row.show();
+                    } else {
+                        row.hide();
+                    }
+                });
+            });
+        });
+
+        $(".saveBtn").click(function () {
+            if ($("#myform").valid()) {
+                bootbox.confirm({
+                    message: '@Resources.Langues.SaveIt',
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-danger'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-success'
+                        }
+                    },
+                    callback: function (callback) {
+                        if (callback) {
+
+                        }
+                    }
+                });
+            }
+        });
+
+        $(".CancelBtn").click(function () {
+            bootbox.confirm({
+                message: '@Resources.Langues.MoveToList',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-danger'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-success'
+                    }
+                },
+                callback: function (callback) {
+                    if (callback) {
+                        window.location = '@Url.Action("Index","Project")';
+                    }
+                }
+            });
+        });
+
+
+    </script>
+}
+
+

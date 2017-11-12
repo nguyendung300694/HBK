@@ -1,0 +1,267 @@
+﻿@model HBK.Models.MyInformationViewModel
+@{
+    ViewBag.Title = Resources.Langues.MyInfor;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .k-animation-container, .k-animation-container *, .k-animation-container :after, .k-block .k-header, .k-list-container, .k-widget, .k-widget *, .k-widget :before {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+</style>
+<h2>@ViewBag.Title</h2>
+<form action="@Url.Action("MyInfors", "Account")" class="form-horizontal" enctype="multipart/form-data" id="myform" method="post" role="form">
+    @(Html.Kendo().TabStrip()
+.Name("tabstrip")
+.Events(events => events.Select("onSelect"))
+.Animation(animation =>
+    animation.Open(effect =>
+        effect.Fade(FadeDirection.In)))
+.Items(tabstrip =>
+{
+    tabstrip.Add().Text(Resources.Langues.Information).Selected(Model.IsEditing).Content(
+    @<text>
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.IsEditing, new { Value = "True" })
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.Email">@Resources.Langues.Email:</label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.EditAccount.Email, new { @class = "form-control", @readonly = true })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.FirstName">@Resources.Langues.FirstName: <span class="RequireText">*</span></label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.EditAccount.FirstName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.LastName">@Resources.Langues.LastName: <span class="RequireText">*</span></label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.EditAccount.LastName, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.Tel">@Resources.Langues.Tel: <span class="RequireText">*</span></label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.EditAccount.Tel, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.Address">@Resources.Langues.Address: </label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.EditAccount.Address, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for=".EditAccount.Country">@Resources.Langues.Country: <span class="RequireText">*</span></label>
+            <div class="col-md-9">
+                @Html.DropDownListFor(m => m.EditAccount.Country, new SelectList(ViewBag.ListCountries, "Value", "Text"), Resources.Langues.PleaseSelect, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for=".EditAccount.Photo">@Resources.Langues.Photo:</label>
+            <div class="col-md-2">
+                @if (!string.IsNullOrEmpty(Model.EditAccount.OldPhoto))
+                {
+                    <img src="@Url.Content(Model.EditAccount.OldPhoto)" class="img-responsive img-thumbnail" alt="@Resources.Langues.Photo">
+                }
+            </div>
+            <div class="col-md-7">
+                @Html.TextBoxFor(m => m.EditAccount.Photo, new { @class = "form-control", @type = "file" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.SpecialtyType">@Resources.Langues.SpecialtyType: <span class="RequireText">*</span></label>
+            @*<div class="col-md-9">
+                    @Html.DropDownListFor(m => m.EditAccount.SpecialtyType, new SelectList(ViewBag.ListType, "Value", "Text"), Resources.Langues.PleaseSelect, new { @class = "form-control" })
+                </div>*@
+            <div class="col-md-4">
+                @Html.DropDownListFor(m => m.EditAccount.MainSpecialtyType, new SelectList(ViewBag.ListType, "Value", "Text"), Resources.Langues.PleaseSelect, new { @class = "form-control" })
+            </div>
+            <div class="col-md-5">
+                @Html.DropDownListFor(m => m.EditAccount.SpecialtyType, new SelectList(ViewBag.ListSubType, "Value", "Text"), Resources.Langues.PleaseSelect, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.SNSSite">@Resources.Langues.SNSSite:</label>
+            <label class="col-md-1" style="color: darkgray; text-align:right;font-size: medium;">
+                http://
+            </label>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.EditAccount.SNSSite, new { @class = "form-control" })
+                </div>
+            </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.Recommender">@Resources.Langues.Recommender: <span class="RequireText">*</span></label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(m => m.EditAccount.Recommender, new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                <input type="button" class="btn btn-default btn-block" id="btnSearch" value="@Resources.Langues.Search" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.Introduction">@Resources.Langues.Introduction: <span class="RequireText">*</span></label>
+            <div class="col-md-9">
+                @Html.TextAreaFor(m => m.EditAccount.Introduction, new { @class = "form-control", @rows = "7" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.Career">@Resources.Langues.Career: <span class="RequireText">*</span></label>
+            <div class="col-md-9">
+                @Html.TextAreaFor(m => m.EditAccount.Career, new { @class = "form-control", @rows = "7" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.CareerDuration">@Resources.Langues.CareerDuration: <span class="RequireText">*</span></label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.EditAccount.CareerDuration, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-3">
+                <input type="submit" class="btn btn-danger btn-block" value="@Resources.Langues.Save" />
+
+            </div>
+            <div class="col-md-3">
+                <input type="button" class="btn btn-default btn-block" value="@Resources.Langues.Cancel" onclick="location.href='@Url.Action("Index", "Home")'" />
+            </div>
+        </div>
+    </text>
+    );
+
+    tabstrip.Add().Text(Resources.Langues.ChangePassword).Selected(!Model.IsEditing).Content(
+    @<text>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="EditAccount.Email">@Resources.Langues.Email:</label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.EditAccount.Email, new { @class = "form-control", @readonly = true })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="ChangePassword.OldPassword">@Resources.Langues.CurrentPassword: <span class="RequireText">*</span></label>
+            <div class="col-md-9">
+                @Html.PasswordFor(m => m.ChangePassword.OldPassword, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="ChangePassword.Password">@Resources.Langues.Password: <span class="RequireText">*</span></label>
+            <div class="col-md-9">
+                @Html.PasswordFor(m => m.ChangePassword.Password, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="ChangePassword.ConfirmPassword">@Resources.Langues.ConfirmPass: <span class="RequireText">*</span></label>
+            <div class="col-md-9">
+                @Html.PasswordFor(m => m.ChangePassword.ConfirmPassword, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-3">
+                <input type="submit" class="btn btn-danger btn-block" value="@Resources.Langues.Save" />
+
+            </div>
+            <div class="col-md-3">
+                <input type="button" class="btn btn-default btn-block" value="@Resources.Langues.Cancel" onclick="location.href='@Url.Action("Index", "Home")'" />
+            </div>
+        </div>
+    </text>
+    );
+}))
+</form>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $("#EditAccount_SNSSite").on("click blur keyup paste", function () {
+            //var val = $(this).val();
+            //if (val == "http://" || val == "https://") {
+            //    var url = $(this).val().replace(val, " ");
+            //    $(this).val(url);
+            //}
+            var url = ($(this).val().replace("https://", ""));
+            $(this).val(url);
+            var url1 = ($(this).val().replace("http://", ""));
+            $(this).val(url1);
+        })
+
+        function onSelect(e) {
+            if ($(e.item).find("> .k-link").text() == '@Resources.Langues.ChangePassword') {
+                $("#IsEditing").val("False");
+            } else {
+                $("#IsEditing").val("True");
+            }
+        }
+        $("#btnSearch").click(function () {
+            $.blockUI();
+            $.post('@Url.Action("DoesEmailExist", "Account")', { email: $("#EditAccount_Recommender").val() }, function (result) {
+                if (!result) {
+                    console.log("result", result);
+                    bootbox.confirm({
+                        message: $("#EditAccount_FirstName").val() + " " + $("#EditAccount_LastName").val() + " " + '@Resources.Langues.IsThisCorrect',
+                        buttons: {
+                            confirm: {
+                                label: 'Yes',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'No',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function (callback) {
+                            if (!callback) {
+
+                                $("#EditAccount_Recommender").val("");
+                            }
+                        }
+                    });
+                } else {
+                    bootbox.alert($("#EditAccount_FirstName").val() + " " + $("#EditAccount_LastName").val() + " " + '@Resources.Langues.NotRegister');
+                    $("#EditAccount_Recommender").val("");
+                }
+            })
+            .fail(function () {
+                bootbox.alert('@Resources.Langues.ContactAdmin');
+                $("#EditAccount_Recommender").val("");
+            })
+            .always(function () {
+                $.unblockUI();
+            });
+        });
+        $(function () {
+            $("#EditAccount_MainSpecialtyType").change(function () {
+                var selectedType = $('option:selected', this).val();
+                var SpecialtyType = $("#EditAccount_SpecialtyType");
+                if (selectedType) {
+                    $.blockUI();
+                    $.post('@Url.Action("GetSpecialtyType", "Account")', { MainSpecialtyType: selectedType }, function (result) {
+                        $("#EditAccount_SpecialtyType").empty();
+                        $.each(result, function () {
+                            SpecialtyType.append($("<option />").val(this.value).text(this.text));
+                        });
+                        SpecialtyType.prop("disabled", false);
+                    })
+                    .fail(function () {
+                        bootbox.alert('@Resources.Langues.ContactAdmin');
+                    })
+                    .always(function () {
+                        $.unblockUI();
+                    });
+                } else {
+                    SpecialtyType.empty();
+                    SpecialtyType.append($("<option />").val("").text('@Resources.Langues.PleaseSelect'));
+                    SpecialtyType.prop("disabled", true);
+                }
+            });
+        });
+    </script>
+}

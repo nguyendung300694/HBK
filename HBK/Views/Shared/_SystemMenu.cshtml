@@ -1,0 +1,58 @@
+﻿
+
+@{
+    ViewBag.Title = Resources.Langues.System;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Resources.Langues.System</h2>
+
+<style>
+    #left-menu .k-menu .k-state-highlight a {
+        background-color: #25a0da;
+        color: white;
+    }
+
+    /*#left-menu .k-state-highlight{
+
+    }*/
+
+    #left-menu .k-menu .k-link {
+        color: black;
+    }
+
+    #left-menu .k-menu .k-state-default a:hover {
+        color: #25a0da;
+    }
+
+    #left-menu .k-menu .k-state-highlight a:hover {
+            color: white;
+            background-color: #25a0da;
+        }
+
+</style>
+
+<div class="w3-container">
+    <div class="col-md-2" id="left-menu">
+        @(Html.Kendo().Menu()
+    .Name("MenuSystem")
+    .Orientation(MenuOrientation.Vertical)
+    .Items(items =>
+    {
+        items.Add()
+            .Text(Resources.Langues.UserManagement).Action("Index", "System");
+
+        items.Add()
+             .Text(Resources.Langues.CommonCodeManagement).Action("Index", "CommonCode");
+
+        items.Add()
+            .Text(Resources.Langues.AccountManagement).Action("Index", "AccountManagement");
+
+    })
+        )
+    </div>
+
+    <div class="col-md-10">
+        @RenderBody()
+    </div>
+</div>

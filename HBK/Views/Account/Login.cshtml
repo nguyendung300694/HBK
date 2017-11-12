@@ -1,0 +1,66 @@
+﻿@model HBK.Models.LoginViewModel
+@{
+    ViewBag.Title = "BEN " + Resources.Langues.Login;
+    List<SelectListItem> ListLanguages = new List<SelectListItem>();
+    ListLanguages.Add(new SelectListItem { Value = "ko", Text = "Korea" });
+    ListLanguages.Add(new SelectListItem { Value = "en", Text = "English" });
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="row">
+            <div>
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+            {
+                    @Html.AntiForgeryToken()
+                    <h4>@Resources.Langues.UseBenAcc</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <label class="col-md-12 control-label" for="Email">@Resources.Langues.Email</label>
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12 control-label" for="Password">@Resources.Langues.Password @Html.ActionLink(Resources.Langues.Forgot, "ForgotPassword", null, new { @style = "float: right;" })</label>
+                        <div class="col-md-12">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12 control-label" for="Language">@Resources.Langues.SelectLang</label>
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(m => m.Language, ListLanguages, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(m => m.RememberMe) <b>@Resources.Langues.KeepMe</b>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="submit" value="@Resources.Langues.Login" class="btn btn-success btn-block" />
+                        </div>
+                    </div>
+                }
+            </div>
+            @*<div class="col-md-6">
+                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            </div>*@
+        </div>
+    </div>
+</div>
+<br />
+<br />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

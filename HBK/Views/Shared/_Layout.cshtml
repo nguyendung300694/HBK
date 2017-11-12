@@ -1,0 +1,199 @@
+﻿@using Microsoft.AspNet.Identity
+@using System.Security.Claims
+@using HBK.Models
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HBK-Corp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link href="@Url.Content("~/Content/kendo/2017.1.223/kendo.common-bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.1.223/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.1.223/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.1.223/kendo.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.1.223/kendo.dataviz.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/kendo/2017.1.223/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2017.1.223/angular.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2017.1.223/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2017.1.223/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2017.1.223/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/js/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/js/wow.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/js/slick.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/js/custom.js")"></script>
+
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/bootstrap.min.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/font-awesome.min.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/animate.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/slick.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/theme.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/style.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/footer.css")">
+
+    <script type="text/javascript">
+        var baseUrl = '@Url.Content("~/")';
+    </script>
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/BEN.js"></script>
+
+    <style>
+        .foo-info:hover a {
+            color: #12a3df !important;
+        }
+
+        .navbar-brand:hover {
+            color: #fff !important;
+            font-size: 18px;
+        }
+
+        .navbar-brand {
+            margin-top: 14px;
+            margin-bottom: -20px;
+            padding: 0px 30px 0px 30px !important;
+            font-size: 16px;
+        }
+    </style>
+    @RenderSection("styles", required: false)
+
+</head>
+<body>
+  
+    <div id="preloader">
+        <div id="status">&nbsp;</div>
+    </div>
+    <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
+    <header id="header">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar">
+                        </span><span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a style="" class="navbar-brand" href="@Url.Action("Index","Home")">
+                        @*<img src="/Content/images/logo.png" alt="">*@ HBK-Corp
+                    </a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse  scroll-style-7">
+                    <ul class="nav navbar-nav custom_nav">
+                        <li class="active"><a href="index.html">Trang chủ</a></li>
+                        <li><a href="#">Giới thiệu</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sản phẩm</a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Thiết bị tự động hóa</a></li>
+                                <li><a href="#">Thiết bị truyền động</a></li>
+                                <li><a href="#">Thiết bị và các bộ phân điều khiển khí nén, thủy lực</a></li>
+                                <li><a href="#">Thiết bị cầm tay và thiết bị đo</a></li>
+                                <li><a href="#">Thiết kế/Lắp đặt hệ thống băng tải, Hệ thống tự động...</a></li>
+                                <li><a href="#">Thiết bị nhà xưởng</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Tin tức</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div class="search">
+                    <a class="search_icon" href="#"><i class="fa fa-search"></i></a>
+                    <form action="#">
+                        <input class="search_bar" type="text" placeholder="Search here">
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="content" class="container">
+        @RenderBody()
+    </section>
+    <footer id="footer">
+        <div class="footer_top" style="color:#fff;">
+            <div class="container">
+                <div id="footer-widgets" class="row clearfix">
+                    <div class="col-sm-3">
+                        <section id="text-5" class="widget widget_text clearfix">
+                            <div class="widget-heading clearfix"><h6>Thông tin liên hệ</h6></div>			<div class="textwidget">
+                                <b>Trụ sở chính</b>
+                                <br><br>
+                                328-330 Đường D3, Văn Thánh Bắc, Phường 25, Quận Bình Thạnh, TP HCM
+                                <br>
+                                Hotline: 028-35129975 / 08-35121122
+                                <br>
+                                Fax: 028-35129976<p></p>
+
+                                <ul class="social-icons standard">
+                                    <li class="twitter"><a style="color:#fff;" href="#" target="_blank"><i class="fa-twitter"></i><i class="fa-twitter"></i></a></li>
+                                    <li class="facebook"><a style="color:#fff;" href="#" target="_blank"><i class="fa-facebook"></i><i class="fa-facebook"></i></a></li>
+                                    <li class="youtube"><a style="color:#fff;" href="#" target="_blank"><i class="fa-youtube"></i><i class="fa-youtube"></i></a></li>
+                                    <li class="googleplus"><a style="color:#fff;" href="#" target="_blank"><i class="fa-google-plus"></i><i class="fa-google-plus"></i></a></li>
+                                    <li class="flickr"><a style="color:#fff;" href="#" target="_blank"><i class="fa-flickr"></i><i class="fa-flickr"></i></a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-sm-3">
+                        <section id="text-4" class="widget widget_text clearfix">
+                            <div class="widget-heading clearfix"><h6>Tin facebook</h6></div>
+                            <div class="textwidget">
+                                <div class="cff-wrapper">
+                                    <div id="cff" rel="60" class="" style="padding:4px;">
+                                    </div><div class="cff-clear"></div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-sm-3">
+                        <section id="categories-6" class="widget widget_categories clearfix">
+                            <div class="widget-heading clearfix"><h6>Tin tức – Sự kiện</h6></div>
+                            <ul>
+                                @*<li class="foo-info">
+                                        <a  style="color:#fff;" href="#">Tin chuyên ngành</a>
+                                    </li>*@
+                                <li class="foo-info">
+                                    <a style="color:#fff;" href="#">Tin Tức HBK</a>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+                    <div class="col-sm-3">
+                        <section id="email newsletter" class="widget eemail_widget clearfix">
+                            <div class="widget-heading clearfix"><h6>Đăng ký nhận bản tin</h6></div>
+                            <div>
+                                <div class="eemail_textbox">
+                                    <input style="color:#000;" class="eemail_textbox_class" name="eemail_txt_email" id="eemail_txt_email" placeholder="Vui lòng điền địa chỉ mail của bạn" ;" maxlength="150" type="text">
+                                </div>
+                                <div class="eemail_button">
+                                    <input class="eemail_textbox_button" name="eemail_txt_Button" id="eemail_txt_Button" value="Đăng ký" type="button">
+                                </div>
+                            </div>
+                        </section>
+                        @*<section id="text-7" class="widget widget_text clearfix">
+                                <div class="textwidget">
+                                    <select style="color:#000;" id="link-dropdown-widget" name="link-dropdown">
+                                        <option value="">HBK</option>
+                                    </select>
+                                </div>
+                            </section>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer_bottom">
+            <div class="container">
+                <p class="copyright">Copyright &copy; @DateTime.Now.Year <a href="@Url.Action("Index","Home")">HBK-Corp</a></p>
+                <p class="developer">Developed By Dung Nguyen</p>
+            </div>
+        </div>
+    </footer>
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

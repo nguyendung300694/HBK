@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewBag.Title = Resources.Langues.Project;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string selectedProjectStatus = (string)ViewBag.selectedProjectStatus;
+}
+
+<div class="row">
+    <div class="col-md-10 col-xs-8"><h2>@Resources.Langues.Project</h2></div>
+    <div class="col-md-2 col-xs-4"><a class="btn btn-success btn-block BenRightBtn" href="@Url.Action("Create")">@Resources.Langues.CreateProject</a></div>
+</div>
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-1 col-xs-1 SearchLabel">@Resources.Langues.Search</div>
+        <div class="col-md-1 col-xs-1 control-label">@Resources.Langues.ProjectName</div>
+        <div class="col-md-3 col-xs-3">
+            <input type="text" class="form-control" id="search-textbox" />
+        </div>
+        <div class="col-md-1 col-xs-1 control-label">@Resources.Langues.ProjectStatus</div>
+        <div class="col-md-3 col-xs-4">
+            @foreach (SelectListItem ProjectStatus in ViewBag.ListProjectStatus)
+            {
+                <label class="radio-inline">
+                    @Html.RadioButton("ProjectStatus", ProjectStatus.Value, ProjectStatus.Value.Equals(selectedProjectStatus), new { @StatusName = ProjectStatus.Text })@ProjectStatus.Text
+                </label>
+            }
+        </div>
+        <div class="col-md-2 col-xs-2"><input type="button" class="btn btn-success btn-block" value="@Resources.Langues.Search" id="btnSearch" /></div>
+        <div class="col-md-1 col-xs-0"></div>
+    </div>
+</div>
+@(Html.Kendo().ListView<HBK.Models.CommunicationViewModel>()
+            .Name("listView")
+            .TagName("div")
+            .ClientTemplateId("template")
+            .DataSource(dataSource =>
+            {
+                dataSource.Read(read => read.Action("GetProjects", "Project"));
+                dataSource.PageSize(21);
+            })
+)
+<script type="text/x-kendo-tmpl" id="template">
+    <div class="tx_destination tx_clearfix">
+        <div class="tx_image_wrapper">
+            <a href='@Url.Action("ProjectDetails", "Project")/#:data.ProjectId#'>
+                <img src="#=data.ImageURL#" alt="#:data.ProjectName# image" />
+            </a>
+            <span class="tx_icon tx_left_arrow_icon">
+                <span class="k-icon k-i-arrow-60-left"></span>
+            </span>
+            <span class="tx_icon tx_up_arrow_icon"></span>
+        </div>
+        <div class="tx_destination_info">
+            <p class="tx_places">
+                &diams;@Resources.Langues.ProjectName: #=ProjectName#
+            </p>
+            <p class="tx_places">
+                &diams;@Resources.Langues.PMName: #=PMName#
+            </p>
+            <p class="tx_places">
+                &diams;@Resources.Langues.StartDate: #if(StartDate!= null){# #:kendo.toString(kendo.parseDate(StartDate),"yyyy-MM-dd")# #}#
+            </p>
+            <p class="tx_places">
+                &diams;@Resources.Langues.EndDate: #if(EndDate!= null){# #:kendo.toString(kendo.parseDate(EndDate),"yyyy-MM-dd")# #}#
+            </p>
+            <p class="tx_places">
+                &diams;@Resources.Langues.Status: #:data.Status#
+            </p>
+            <p class="tx_places">
+                &diams;@Resources.Langues.Member: #:data.MemberCount#
+            </p>
+            <div class="tx_dest_footer">
+                <button id="btn_ViewDetails" class="tx_btn" onclick="location.href='@Url.Action("ProjectDetails", "Project")/#:data.ProjectId#'">@Resources.Langues.ViewDetails</button>
+            </div>
+        </div>
+    </div>
+</script>
+@section Scripts {
+    <script type="text/javascript">
+        $('#btnSearch').click(function () {
+            var text = $("#search-textbox").val().toLowerCase();
+            var status = $('input[name=ProjectStatus]:checked').attr("StatusName");
+            var listView = $("#listView").data("kendoListView");
+            var dataInView = listView.dataSource.view();
+            dataInView.forEach(function (item) {
+                var row = $('div[data-uid="' + item.uid + '"]');
+                if (item.ProjectName.toLowerCase().indexOf(text) > -1 && (!status || item.Status == status)) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,517 @@
+﻿
+@{
+    ViewBag.Title = "Create Communication";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<link rel="stylesheet" href="~/Content/community.css" />
+<style type="text/css" media="screen">
+    .container-fluid {
+        margin-top: -10px;
+        margin-bottom: 40px;
+    }
+
+    .formCus {
+        margin-top: 10px;
+    }
+
+    h3, h7 {
+        cursor: default;
+    }
+
+    .fileDisp {
+        display: none;
+    }
+
+    .label-file {
+        display:block;
+        text-align: center;
+        background: #009688;
+        padding: 10px;
+        color: #fff;
+    }
+
+        .label-file:hover {
+            background: #3399FF;
+            cursor: pointer;
+        }
+
+    .span-file {
+        display: inline-block;
+        max-width: inherit;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    .RequireText {
+        color: red;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .field-validation-error {
+        background-color: white;
+        border-radius: 4px;
+        border: solid 1px #333;
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        text-align: right;
+    }
+</style>
+<div class="container-fluid">
+    <div class="col-md-10 col-md-offset-1">
+        @*<div class="w3-container">
+            <div class="w3-panel w3-leftbar w3-border-grey w3-blue">
+                <p class="w3-xxlarge w3-serif"><i>"Create information"</i></p>
+            </div>
+        </div>*@
+        <form action="@Url.Action("Create", "Home")" enctype="multipart/form-data" method="post" role="form" class="form-horizontal" id="formComm" name="formComm">
+            <div class="col-md-8 formCus">
+                <div class="w3-card-4">
+                    @Html.AntiForgeryToken()
+                    <header class="w3-container w3-hover-blue w3-border-bottom w3-border-blue w3-teal">
+                        <h3>@Resources.Langues.Community</h3>
+                    </header>
+                    <div class="w3-container w3-white" style="padding-top:30px;padding-bottom:15px;">
+                        <div class="form-group">
+                            <h7 class="control-label col-md-3">@Resources.Langues.Title:</h7>
+                            <div class="col-md-8">
+                                <input type="text" name="CommTitle" class="form-control" id="commTitle" placeholder="@Resources.Langues.EnterCommunityTitle...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h7 class="control-label col-md-3">@Resources.Langues.Content:</h7>
+                            <div class="col-md-8" id="CommContentContainer">
+                                @(Html.Kendo().Editor()
+                                  .Name("CommContent")
+                                  .Encode(true)
+                                  .Tools(tools => tools.Clear().FontName().FontSize().Bold().Italic().Underline().JustifyLeft().JustifyCenter().JustifyRight())
+                                  .HtmlAttributes(new { style = "height:500px", aria_label = "editor" })
+                                  .Events(events=>events
+                                  .KeyDown("EditorTextChange"))
+                                //.Resizable(resizable => resizable.Content(true).Toolbar(true))
+                                //.ImageBrowser(imageBrowser => imageBrowser
+                                //    .Image("~/Content/UserFiles/Images/{0}")
+                                //    .Read("Read", "ImageBrowser")
+                                //    .Create("Create", "ImageBrowser")
+                                //    .Destroy("Destroy", "ImageBrowser")
+                                //    .Upload("Upload", "ImageBrowser")
+                                //    .Thumbnail("Thumbnail", "ImageBrowser")
+                                //)
+                                //.Value(@<text> </text>)
+                                )
+                            </div>
+                        </div>
+                        @*<textarea name="CommContent" style="resize: none;" class="form-control" rows="5" id="commContent" placeholder="@Resources.Langues.EnterCommunityContent..."></textarea>*@
+                        <div class="form-group">
+                            <h7 class="control-label col-md-3" style="margin-top:13px;">@Resources.Langues.Image:</h7>
+                            <div class="col-md-8">
+                                <div id="formCommAtt2" class="w3-container">
+                                    <div class="form-group ">
+                                        <label style="margin-top:10px;" for="imgDis" class="label-file w3-block"><span style="padding-left:40px;" class="glyphicon glyphicon-open"></span> <span class="span-file">@Resources.Langues.SelectImageToDisplay</span></label>
+                                        <span class="fileDisp"><input type="file" id="imgDis" class="fileInput" name="ImageDisPlayed" accept="image/gif, image/jpg,image/png,image/jpeg" aria-describedby="fileHelp" /></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="form-group">
+                            <h7 class="control-label col-md-3" style="margin-top:-20px;">@Resources.Langues.DisplayImage:</h7>
+                            <div class="col-md-9">
+                                <div class="radio">
+                                    <h7 class="col-md-2" style="margin-left:10px;margin-top:-18px;" ><input type="radio" checked="checked" class="radDis" name="OptradioDisplay" value="display">@Resources.Langues.Yes</h7>
+                                    <h7 class="col-md-2" style="margin-left:10px;margin-top:-18px;"><input type="radio" class="radDis" name="OptradioDisplay" value="none">@Resources.Langues.No</h7>
+                                </div>
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+                <div class="row">
+                    <button id="btnSubmit" style="margin-top:10px;" type="button" class="w3-button w3-block w3-blue"><span class="glyphicon glyphicon-send"></span> <b> @Resources.Langues.Submit</b> </button>
+                </div>
+            </div>
+            <div class="col-md-4 formCus">
+                <div class="w3-card-4 formContent">
+                    <header class="w3-container w3-hover-blue w3-border-bottom w3-border-blue w3-teal">
+                        <h3 class="sta-h3">@Resources.Langues.CommunityAttach</h3>
+                    </header>
+                    <div class="w3-container w3-white" style="padding-top:50px;padding-bottom:63px;">
+                        <div id="formCommAtt0" class="w3-container text-center w3-white">
+                            <div class="form-group text-center">
+                                <label style="margin-top:10px;" for="file-img" class="label-file"><span style="padding-left:40px;" class="glyphicon glyphicon-open"></span> <span class="span-file">@Resources.Langues.SelectImageToUpload</span></label>
+                                <span class="fileDisp"><input type="file" multiple id="file-img" class="fileInput" name="Images" accept="image/gif, image/jpg,image/png,image/jpeg" aria-describedby="fileHelp" /></span>
+                            </div>
+                        </div>
+                        <div id="formCommAtt1" class="w3-container text-center w3-white">
+                            <div class="form-group text-center">
+                                <label style="margin-top:10px;" for="file" class="label-file"><span style="padding-left:40px;" class="glyphicon glyphicon-open"></span> <span class="span-file">@Resources.Langues.SelectFileToUpload</span></label>
+                                <span class="fileDisp"><input type="file" multiple id="file" class="fileInput" name="Files" accept=".xls,.xlsx ,.doc,.docx,.xml,.ppt,.pptx,.pdf,.txt" aria-describedby="fileHelp" /></span>
+                            </div>
+                        </div>
+                    </div>
+                    @*<form id="formCommAtt0" name="formCommAtt0" class="form-horizontal" >
+                        <header class="w3-container w3-hover-blue w3-border-bottom w3-border-blue w3-teal">
+                            <h3 class="sta-h3">@Resources.Langues.CommunityAttach</h3>
+                        </header>
+                        <div class="w3-container w3-white" style="padding-top:15px;padding-bottom:11px;">
+                            <div class="form-group">
+                                <div class="col-md-4 control-label">
+                                    <h7>@Resources.Langues.Image/@Resources.Langues.File:</h7>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="radio">
+                                        <h7 class="col-md-3"><input type="radio" class="radCho" name="optradioChoose0" checked="checked" value="img">@Resources.Langues.Image</h7>
+                                        <h7 class="col-md-3"><input type="radio" class="radCho" name="optradioChoose0" value="file">@Resources.Langues.File</h7>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group displayImg">
+                                <div class="col-md-4 control-label">
+                                    <h7>@Resources.Langues.DisplayImage:</h7>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="radio">
+                                        <h7 class="col-md-3"><input type="radio" checked="checked" class="radDis" name="optradioDisplay0" value="display">@Resources.Langues.Yes</h7>
+                                        <h7 class="col-md-3"><input type="radio" class="radDis" name="optradioDisplay0" value="none">@Resources.Langues.No</h7>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <label id="label-file" style="margin-top:10px;" for="file0" class="label-file text-center"><span class="glyphicon glyphicon-open"></span> <span class="span-file">@Resources.Langues.SelectFileToUpload</span></label>
+                                <span class="fileDisp"><input type="file" id="file0" class="fileInput" name="fileInput0" accept="image/gif, image/jpg,image/png,image/jpeg" aria-describedby="fileHelp" /></span>
+                            </div>
+                        </div>
+                    </form>*@
+                </div>
+            </div>
+            <div class="w3-container">
+                @*<div class="col-md-8 text-center">
+
+                </div>
+                <div class="col-md-4"></div>*@
+            </div>
+        </form>
+        @*<div class="w3-right">
+            <div class="w3-bar w3-padding">
+                <button type="button" id="moveTop" class="w3-button w3-small w3-center w3-hover-blue w3-teal w3-circle"><span class="glyphicon glyphicon-chevron-up"></span></button>
+                <button type="button" id="addPanel" class="w3-button w3-small w3-center w3-hover-blue w3-teal w3-circle"><span class="glyphicon glyphicon-plus"></span></button>
+            </div>
+        </div>*@
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript" charset="utf-8" async defer>
+        $(document).ready(function () {
+            var sizeImage = 0;
+            var sizeFile = 0;
+            var sizeImageDisplay = 0;
+
+            $('#imgDis').on('change', function (e) {
+                var fName = e.target.value.split('\\').pop();
+                var val = $(this).val();
+                val = val.substring(val.lastIndexOf('.') + 1).toLowerCase();
+                if (val == "gif" || val == "jpg" || val == "png" || val == "jpeg") {
+                    if (fName.length == 0) {
+                        $('#formCommAtt2').find('.span-file').text('@Resources.Langues.SelectImageToDisplay');
+                        sizeImageDisplay = 0;
+                        //console.log("length: ", "" + sizeImageDisplay);
+                    } else {
+                        $('#formCommAtt2').find('.span-file').text(fName);
+                        $('#formCommAtt2').find('.label-file').removeClass('input-validation-error');
+                        sizeImageDisplay = document.getElementById("imgDis").files[0].size;
+                        //console.log("length: ", document.getElementById("imgDis").files[0]);
+                    }
+                }
+                else {
+                    if ($('#imgDis').val() != "") {
+                        bootbox.alert('@Resources.Langues.FileMustBeImage');
+                    }
+                    $('#formCommAtt2').find('.span-file').text('@Resources.Langues.SelectImageToDisplay');
+                    sizeImageDisplay = 0;
+                    $('#imgDis').val('');
+                }
+            });
+
+            $('#file-img').on('change', function (e) {
+                var files = $(this)[0].files;
+                if ($(files).length == 0) {
+                    $('#formCommAtt0').find('.span-file').text('@Resources.Langues.SelectImageToUpload');
+                    sizeImage = 0;
+                    //console.log("image-size: ", sizeImage);
+                } else if ($(files).length == 1) {
+                    var fileName = e.target.value.split('\\').pop();
+                    $('#formCommAtt0').find('.span-file').text(fileName);
+                    $('#formCommAtt0').find('.label-file').removeClass('input-validation-error');
+                    sizeImage = document.getElementById("file-img").files[0].size;
+                    //console.log("image-size: ", sizeImage);
+                } else {
+                    $('#formCommAtt0').find('.span-file').text($(files).length + ' @Resources.Langues.ImageSelected');
+                    $('#formCommAtt0').find('.label-file').removeClass('input-validation-error');
+                    sizeImage = 0;
+                    for (var i = 0; i < $(files).length; i++) {
+                        sizeImage += files[i].size;
+                    }
+                    //console.log("image-size: ", sizeImage);
+                }
+            });
+
+            $('#file').on('change', function (e) {
+                var files = $(this)[0].files;
+                if ($(files).length == 0) {
+                    $('#formCommAtt1').find('.span-file').text('@Resources.Langues.SelectFileToUpload');
+                    sizeFile = 0;
+                    //console.log("file-size: ", sizeFile);
+                } else if ($(files).length == 1) {
+                    var fileName = e.target.value.split('\\').pop();
+                    $('#formCommAtt1').find('.span-file').text(fileName);
+                    $('#formCommAtt1').find('.label-file').removeClass('input-validation-error');
+                    sizeFile = document.getElementById("file").files[0].size;
+                    //console.log("file-size: ", sizeFile);
+                } else {
+                    $('#formCommAtt1').find('.span-file').text($(files).length + ' @Resources.Langues.FileSelected');
+                    $('#formCommAtt1').find('.label-file').removeClass('input-validation-error');
+                    sizeFile = 0;
+                    for (var i = 0; i < $(files).length; i++) {
+                        sizeFile += files[i].size;
+                    }
+                    //console.log("image-size: ", sizeFile);
+                }
+            });
+
+            $('#commTitle').keypress(function () {
+                if ($('#commTitle').val().length != 0) {
+                    $('#commTitle').prop('class', 'form-control');
+                }
+            });
+
+            $('#commContent').keypress(function () {
+                if ($('#commContent').val().length != 0) {
+                    $('#commContent').prop('class', 'form-control');
+                }
+            });
+
+            $('#btnSubmit').click(function () {
+                var CommContentHTML = $('#CommContent').data('kendoEditor').value();
+                var strippedText = CommContentHTML.replace(/(<([^>]+)>)/ig, "");
+                //console.log("commLength: ", strippedText);
+                if ($('#commTitle').val() == "" || strippedText.length == 0 || $('#imgDis').val() == "") {
+                    if ($('#commTitle').val() == '')
+                        $('#commTitle').prop('class', 'form-control input-validation-error');
+                    if ($('#imgDis').val() == "")
+                        $('#formCommAtt2').find('.label-file').prop('class', 'label-file w3-block input-validation-error');
+                    if (strippedText.length == 0)
+                    {
+                        //var table = $($('#CommContent').data().kendoEditor.body).addClass('input-validation-error');
+                        //table.addClass("manipulated");
+                        $('#CommContentContainer').addClass('input-validation-error');
+                    }
+                        //console.log("null: ", "null");
+                        //$('#CommContent').prop('class', 'form-control input-validation-error');
+                }
+                else {
+                    var totalSize = (sizeFile.valueOf() + sizeImage.valueOf() + sizeImageDisplay.valueOf()) / 1048576;
+                    //alert(totalSize.toString());
+                    if (totalSize.valueOf() <= 300) {
+                        $('#formComm').submit();
+                        validate();
+                    }
+                    else {
+                        bootbox.alert('@Resources.Langues.FileOverloaded');
+                    }
+                }
+            });
+
+            @*$('#file0').on('change', function (e) {
+                var fileName = e.target.value.split('\\').pop();
+                if (fileName.length == 0) {
+                    $('#formCommAtt0').find('.span-file').text('@Resources.Langues.SelectFileToUpload');
+                    $('#formCommAtt0').find('.label-file').css('background-color', '#009688');
+                } else {
+                    $('#formCommAtt0').find('.span-file').text(fileName);
+                    $('#formCommAtt0').find('.label-file').css('background-color', '#3399FF');
+                    $('#formCommAtt0').find('.label-file').removeClass('input-validation-error');
+                }
+            });*@
+
+            @*
+            $('input[type=radio][name=optradioChoose0]').on('change', function () {
+                if (this.value == 'img') {
+                    $('#formCommAtt0').find(".displayImg").show();
+                    $('#formCommAtt0').find(".fileInput").prop('accept', 'image/gif, image/jpg,image/png,image/jpeg');
+                    $('#formCommAtt0').find('input[type=radio][name=optradioDisplay0][value=display]').prop('checked', true);
+                    $('#formCommAtt0').find('.span-file').text('@Resources.Langues.SelectFileToUpload');
+                    $('#formCommAtt0').find('.label-file').css('background-color', '#009688');
+                    $('#formCommAtt0').find('.fileInput').val('');
+                }
+                else if (this.value == 'file') {
+                    $('#formCommAtt0').find(".displayImg").hide();
+                    $('#formCommAtt0').find(".fileInput ").prop('accept', '.xls,.xlsx ,.doc,.xml,.ppt');
+                    $('#formCommAtt0').find('input[type=radio][name=optradioDisplay0][value=none]').prop('checked', true);
+                    $('#formCommAtt0').find('.span-file').text('@Resources.Langues.SelectFileToUpload');
+                    $('#formCommAtt0').find('.label-file').css('background-color', '#009688');
+                    $('#formCommAtt0').find('.fileInput').val('');
+                }
+            });
+
+            var i = 1;
+
+            $('#moveTop').click(function () {
+                scroll(0, 0);
+            });
+
+            $('#addPanel').click(function () {
+
+                var header = $('<div class="formCus"><div class="w3-card-4 formContent"><form id="formCommAtt'+i+'" name="formCommAtt'+i+'" class="form-horizontal" >'+
+                    '<header class="w3-container w3-hover-blue w3-border-bottom w3-border-blue w3-teal"><div class="btn-content"></div></header>' +
+                    '<div class="w3-container w3-white" style="padding-top:15px;padding-bottom:11px;"><div class="form-group"><div class="col-md-4 control-label">'+
+                    '<h7>@Resources.Langues.Image/@Resources.Langues.File:</h7></div><div class="col-md-8"><div class="radio"><h7 class="col-md-3"><input type="radio" '+
+                    ' class="radCho" name="optradioChoose'+i+'" checked="checked" value="img">@Resources.Langues.Image</h7><h7 class="col-md-3"><input type="radio" '+
+                    'class="radCho" name="optradioChoose'+i+'" value="file">@Resources.Langues.File</h7></div></div></div><div class="form-group displayImg">'+
+                    '<div class="col-md-4 control-label"><h7>@Resources.Langues.DisplayImage:</h7></div><div class="col-md-8"><div class="radio"><h7 class="col-md-3"> '+
+                    ' <input type="radio" checked="checked" class="radDis" name="optradioDisplay'+i+'" value="display">@Resources.Langues.Yes</h7><h7 class="col-md-3"> '+
+                    ' <input type="radio" class="radDis" name="optradioDisplay'+i+'" value="none">@Resources.Langues.No</h7></div></div></div><div class="form-group text-center">'+
+                    '<label style="margin-top:10px;" for="file'+i+'" class="label-file text-center"><span class="glyphicon glyphicon-open"></span> '+
+                    '<span class="span-file">@Resources.Langues.SelectFileToUpload</span></label><span class="fileDisp"><input type="file" id="file'+i+'" class="fileInput" '+
+                    ' name="fileInput'+i+'" accept="image/gif, image/jpg,image/png,image/jpeg" aria-describedby="fileHelp" /></span></div></div></form></div></div>');
+
+                var button = $('<button style="color:red;"type="button" class="close">&times;</button>').on('click', function () {
+                    i--;
+                    header.remove();
+                    var tempForm = 0;
+                    $('.container .formContent form').each(function () {
+                        $(this).prop('id', 'formCommAtt' + tempForm);
+                        $(this).prop('name', 'formCommAtt' + tempForm);
+                        $(this).find('.radCho').each(function () {
+                            $(this).prop('name', 'optradioChoose' + tempForm);
+                        });
+                        $(this).find('.radDis').each(function () {
+                            $(this).prop('name', 'optradioDisplay' + tempForm);
+                        });
+                        $(this).find('.fileInput').each(function () {
+                            $(this).prop('name', 'fileInput' + tempForm);
+                        });
+                        if (tempForm > 0) {
+                            var tempSta = tempForm + 1;
+                            $(this).find('.sta-h3').text('@Resources.Langues.CommunityAttach '+tempSta);
+                        }
+                        tempForm++;
+                    });
+		        });
+
+                $(header).find('form').on('change', 'input:radio[class=radCho]', function () {
+                    var form_id = $(this).closest("form");
+                    if (this.value == 'img') {
+                            $(form_id).find('.displayImg').show();
+                            $(form_id).find('.fileInput').prop('accept', 'image/gif, image/jpg,image/png,image/jpeg');
+                            $(form_id).find('input[type=radio][class=radDis][value=display]').prop('checked', true);
+                            $(form_id).find('.span-file').text('@Resources.Langues.SelectFileToUpload');
+                            $(form_id).find('.label-file').css('background-color', '#009688');
+                            $(form_id).find('.fileInput').val('');
+                        }
+                        else if (this.value == 'file') {
+                            $(form_id).find('.displayImg').hide();
+                            $(form_id).find('.fileInput').prop('accept', '.xls,.xlsx ,.doc,.xml,.ppt');
+                            $(form_id).find('input[type=radio][class=radDis][value=none]').prop('checked', true);
+                            $(form_id).find('.span-file').text('@Resources.Langues.SelectFileToUpload');
+                            $(form_id).find('.label-file').css('background-color', '#009688');
+                            $(form_id).find('.fileInput').val('');
+                        }
+                });
+
+                $(header).find('form').on('change', 'input[type=file][class=fileInput]', function (e) {
+                    var form = $(this).closest("form");
+                    var fileN = e.target.value.split('\\').pop();
+                    if (fileN.length == 0) {
+                        $(form).find('.span-file').text('@Resources.Langues.SelectFileToUpload');
+                        $(form).find('.label-file').css('background-color', '#009688');
+                    } else {
+                        $(form).find('.span-file').text(fileN);
+                        $(form).find('.label-file').css('background-color', '#3399FF');
+                    }
+                });
+
+		        $(header).find('.btn-content').append(button);
+
+		        var stt = i + 1;
+		        $(header).find('.btn-content').append('<h3 class="sta-h3">@Resources.Langues.CommunityAttach ' + stt + '</h3>');
+                $(header).appendTo('#panel-content');
+
+                window.scrollTo(0, document.body.scrollHeight);
+
+                i++;
+            });
+
+            function validate() {
+                $('#commTitle').val('');
+                $('#commContent').val('');
+                $('#formCommAtt0').find('input:radio[class=radCho][value=img]').prop('checked', true);
+                $('#formCommAtt0').find('input:radio[class=radDis][value=display]').prop('checked', true);
+                $('#formCommAtt0').find('.fileInput').empty();
+                $('.displayImg').show();
+                $('.fileInput').val('');
+                $('.span-file').text('@Resources.Langues.SelectFileToUpload');
+                $('.label-file').css('background-color', '#009688');
+                var tempDel = 0;
+                $('.container .formContent form').each(function () {
+                    if (tempDel > 0) {
+                        $(this).remove();
+                    }
+                    tempDel++;
+                });
+                $('#label-file').prop('class', 'label-file text-center');
+                $('#commTitle').prop('class', 'form-control');
+                $('#commContent').prop('class', 'form-control');
+                i = 1;
+            }
+
+            function catFie() {
+                if($('#commTitle').text.length ==0 || $('#commContent').text.length ==0){
+                    return true;
+                }
+                return false;
+            }
+                *@
+
+        });
+
+
+        function EditorTextChange() {
+            $('#CommContentContainer').removeClass('input-validation-error');
+            //alert('xxx');
+        }
+
+        function validate() {
+            $('#commTitle').val('');
+            $('#commContent').val('');
+            $('#formCommAtt0').find('input:radio[class=radCho][value=img]').prop('checked', true);
+            $('#formCommAtt0').find('input:radio[class=radDis][value=display]').prop('checked', true);
+            $('input').each(function () {
+                $(this).val('');
+            });
+            $('.displayImg').show();
+            $('.fileInput').val('');
+            $('.span-file').text('@Resources.Langues.SelectFileToUpload');
+            //$('.label-file').css('background-color', '#009688');
+            //var tempDel = 0;
+            //$('.container .formContent form').each(function () {
+            //    if (tempDel > 0) {
+            //        $(this).remove();
+            //    }
+            //    tempDel++;
+            //});
+            $('#CommContent').data('kendoEditor').value('');
+            $('#label-file').prop('class', 'label-file text-center');
+            $('#commTitle').prop('class', 'form-control');
+            $('#commContent').prop('class', 'form-control');
+            i = 1;
+        }
+    </script>
+}
