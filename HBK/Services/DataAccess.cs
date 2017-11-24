@@ -73,12 +73,12 @@ namespace HBK.Services
 
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
             builder.RegisterType<DbFactory>().As<IDbFactory>().InstancePerRequest();
-            builder.RegisterType<CommonService>().As<ICommonService>().InstancePerRequest();
             builder.RegisterType<MembershipService>().As<IMembershipService>().InstancePerRequest();
-            builder.RegisterType<UsersPhotoService>().As<IUsersPhotoService>().InstancePerRequest();
-            builder.RegisterType<CommunityService>().As<ICommunityService>().InstancePerRequest();
-            builder.RegisterType<CommunityAttachmentService>().As<ICommunityAttachmentService>().InstancePerRequest();
-            builder.RegisterType<ProjectService>().As<IProjectService>().InstancePerRequest();
+
+            builder.RegisterType<ProductService>().As<IProductService>().InstancePerRequest();
+            builder.RegisterType<ProductCategoryService>().As<IProductCategoryService>().InstancePerRequest();
+
+
             IContainer container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }

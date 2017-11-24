@@ -4,13 +4,19 @@
     box-sizing: border-box;
 }
 
-html {
+/*html {
     background-color: #f0f0f0;
-}
+}*/
 
 .btn--block:hover{
     color:#fff !important;
-    opacity:0.7;
+    opacity:0.9;
+    font-weight:bold;
+}
+
+
+.btn--block:focus{
+    color:#fff !important;
     font-weight:bold;
 }
 
@@ -38,12 +44,12 @@ html {
 }
 
 .btn--block {
-    background-color: #f05423;
+    background-color: #009900;
     /*border: 1px solid #cccccc;*/
     /*color: #696969;*/
     color: #fff;
     padding: 0.5rem;
-    text-transform: lowercase;
+    /*text-transform: lowercase;*/
 }
 
 .btn--block {
@@ -79,6 +85,37 @@ html {
 @media (min-width: 56rem) {
     .cards__item {
         width: 50%;
+    }
+}
+
+@media (min-width: 1000px) {
+    .single_page_area .cards__item {
+        width: 33.33%;
+    }
+}
+
+@media (min-width: 992px) {
+    .single_page_area .cards__item {
+        width: 33.33%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .single_page_area .cards__item {
+        width: 25%;
+    }
+}
+
+/*@media (min-width: 1365px) {
+    .single_page_area .cards__item {
+        width: 33.33%;
+    }
+}*/
+
+
+@media (max-width: 640px) {
+    .cards__item {
+        width: 80%;
     }
 }
 

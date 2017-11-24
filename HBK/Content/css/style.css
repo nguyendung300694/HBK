@@ -80,7 +80,7 @@ img {
 }
 
     img:hover {
-        opacity: 0.75;
+        opacity: 0.85;
     }
 
 .img-center {
@@ -239,7 +239,7 @@ img {
     font-size: 32px;
     font-weight: bold;
     height: 50px;
-    border-radius:25px;
+    border-radius: 25px;
     position: fixed;
     right: 75px;
     text-align: center;
@@ -473,7 +473,7 @@ figure.effect-lily a:hover img {
     display: inline;
     float: left;
     padding-bottom: 25px;
-    padding-left: 10px;
+    padding-left: 4px;
     padding-right: 10px;
     width: 100%;
 }
@@ -498,16 +498,15 @@ figure.effect-lily a:hover img {
     display: inline;
     width: 100%;
     position: relative;
-
 }
 
-.single_iteam img{
-    width:250px !important;
-    height:150px !important;
-    display:block;
-    margin-left:auto;
-    margin-right:auto;
-}
+    .single_iteam img {
+        width: 250px !important;
+        height: 150px !important;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
     .single_iteam img {
         border-radius: 5px;
@@ -523,27 +522,27 @@ figure.effect-lily a:hover img {
         width: 100%;
     }
 
-.single_iteam:hover .slider_tittle{
-    text-overflow:clip;
-    overflow:initial;
-    white-space:normal;
-    max-height:inherit;
-    min-height:inherit;
-}
+    .single_iteam:hover .slider_tittle {
+        text-overflow: clip;
+        overflow: initial;
+        white-space: normal;
+        max-height: inherit;
+        min-height: inherit;
+    }
 
 .slider_tittle {
     background: none repeat scroll 0 0 rgba(0,0,0,0.4);
     color: #fff;
     display: inline-block;
     font-size: 15px;
-    font-weight:600;
+    font-weight: 600;
     line-height: 18px;
     padding: 10px 0px 10px 0px;
-    bottom:0px;
-    max-height:38px;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    overflow:hidden;
+    bottom: 0px;
+    max-height: 38px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
     .slider_tittle:hover, .slider_tittle:focus {
@@ -1292,6 +1291,8 @@ figure.effect-lily a:hover img {
             margin-right: 0px;
         }
 
+
+
 @media(max-width:1199px ) {
     .navbar-collapse {
         width: 82%;
@@ -1441,7 +1442,7 @@ figure.effect-lily a:hover img {
     }
 
     .navbar-brand > img {
-        margin-top: 6px;
+        /*margin-top: 6px;*/
     }
 
     .nav-growpop div {
@@ -1457,7 +1458,7 @@ figure.effect-lily a:hover img {
     }
 
     .breadcrumb {
-        width: 103.5%;
+        width: 106%;
     }
 
     .contact_area {
@@ -1479,6 +1480,13 @@ figure.effect-lily a:hover img {
     .topadd_bar {
         display: none;
     }
+}
+
+@media(max-width:606px ) {
+        .breadcrumb {
+        width: 108%;
+    }
+
 }
 
 @media(max-width:480px ) {
@@ -1504,7 +1512,7 @@ figure.effect-lily a:hover img {
     }
 
     .breadcrumb {
-        width: 105%;
+        width: 110%;
     }
 
     .erropr_recentpost .ppost_nav li {

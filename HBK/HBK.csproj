@@ -191,49 +191,44 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AccountManagementController.cs" />
-    <Compile Include="Controllers\CommunicationController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IntroductionController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\ProjectController.cs" />
-    <Compile Include="Controllers\SystemController.cs" />
-    <Compile Include="Controllers\CommonCodeController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\MemberController.cs" />
-    <Compile Include="Migrations\201706231136183_initDatabase.cs" />
-    <Compile Include="Migrations\201706231136183_initDatabase.Designer.cs">
-      <DependentUpon>201706231136183_initDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201711230800358_InitHBKDB.cs" />
+    <Compile Include="Migrations\201711230800358_InitHBKDB.Designer.cs">
+      <DependentUpon>201711230800358_InitHBKDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711230803512_UpdateDB2411.cs" />
+    <Compile Include="Migrations\201711230803512_UpdateDB2411.Designer.cs">
+      <DependentUpon>201711230803512_UpdateDB2411.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711231006341_UpdateDB24112.cs" />
+    <Compile Include="Migrations\201711231006341_UpdateDB24112.Designer.cs">
+      <DependentUpon>201711231006341_UpdateDB24112.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711231050584_UpdateDB24113.cs" />
+    <Compile Include="Migrations\201711231050584_UpdateDB24113.Designer.cs">
+      <DependentUpon>201711231050584_UpdateDB24113.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ProjectComment.cs" />
-    <Compile Include="Models\ProjectAttachment.cs" />
-    <Compile Include="Models\ProjectMember.cs" />
-    <Compile Include="Models\Company.cs" />
-    <Compile Include="Models\CommunicationViewModel.cs" />
-    <Compile Include="Models\Project.cs" />
     <Compile Include="Models\HomeViewModels.cs" />
-    <Compile Include="Models\MemberViewModel.cs" />
-    <Compile Include="Models\ProjectViewModel.cs" />
-    <Compile Include="Models\UsersPhoto.cs" />
-    <Compile Include="Models\CommentAttachment.cs" />
-    <Compile Include="Models\Common.cs" />
-    <Compile Include="Models\ExtendAspNetUsers.cs" />
-    <Compile Include="Models\CommunityComment.cs" />
-    <Compile Include="Models\CommunityAttachment.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Community.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductCategory.cs" />
+    <Compile Include="Models\ProductCategoryExtend.cs" />
+    <Compile Include="Models\ProductExtend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\CommunityAttachService.cs" />
-    <Compile Include="ProjectService.cs" />
-    <Compile Include="Services\CommunityService.cs" />
     <Compile Include="Services\DataAccess.cs" />
-    <Compile Include="Services\CommonService.cs" />
     <Compile Include="Services\MembershipService.cs" />
-    <Compile Include="Services\UsersPhotoService.cs" />
+    <Compile Include="Services\ProductCategoryService.cs" />
+    <Compile Include="Services\ProductService.cs" />
     <Compile Include="Services\Util.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -279,8 +274,13 @@
     <Content Include="Content\images\Bangtai1.jpg" />
     <Content Include="Content\images\bophandieukhien.jpg" />
     <Content Include="Content\images\error-img.png" />
+    <Content Include="Content\images\Logo.jpg" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\Maynenkhi1.jpg" />
+    <Content Include="Content\images\ProductCategoryImg\Bangtai1.jpg" />
+    <Content Include="Content\images\ProductCategoryImg\bophandieukhien.jpg" />
+    <Content Include="Content\images\ProductCategoryImg\Maynenkhi1.jpg" />
+    <Content Include="Content\images\ProductCategoryImg\thietbitruyendong.jpg" />
     <Content Include="Content\images\thietbido.jpg" />
     <Content Include="Content\images\thietbitruyendong.jpg" />
     <Content Include="Content\images\thietbitudong.jpg" />
@@ -1075,9 +1075,6 @@
     <Content Include="Scripts\kendo\2017.1.223\kendo.virtuallist.min.js.map" />
     <Content Include="Scripts\kendo\2017.1.223\kendo.web.min.js.map" />
     <Content Include="Scripts\kendo\2017.1.223\kendo.window.min.js.map" />
-    <Content Include="Views\Member\Index.cshtml" />
-    <Content Include="Views\Project\Index.cshtml" />
-    <Content Include="Views\System\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
@@ -1099,19 +1096,14 @@
     <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
-    <Content Include="Views\Communication\CommunicationDetails.cshtml" />
-    <Content Include="Views\Communication\Edit.cshtml" />
     <Content Include="Views\Account\MyInfors.cshtml" />
-    <Content Include="Views\Project\ProjectDetails.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SpecialTypeEditor.cshtml" />
-    <Content Include="Views\Project\Create.cshtml" />
     <Content Include="Views\Shared\_SystemMenu.cshtml" />
-    <Content Include="Views\CommonCode\Index.cshtml" />
-    <Content Include="Views\AccountManagement\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ComSubCode.cshtml" />
-    <Content Include="Views\Communication\_CommentLayout.cshtml" />
-    <Content Include="Views\Project\_ProjectCommentLayout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Contact\Index.cshtml" />
+    <Content Include="Views\Introduction\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Site.css" />
@@ -1123,6 +1115,7 @@
   <ItemGroup>
     <Folder Include="Content\CommentAttachments\" />
     <Folder Include="Content\CommunityAttachments\" />
+    <Folder Include="Content\images\ProductImg\" />
     <Folder Include="Content\images\Upload\" />
     <Folder Include="fonts\noto\" />
     <Folder Include="fonts\WebComponentsIcons\" />
@@ -1133,8 +1126,17 @@
       <LastGenOutput>Langues.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706231136183_initDatabase.resx">
-      <DependentUpon>201706231136183_initDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711230800358_InitHBKDB.resx">
+      <DependentUpon>201711230800358_InitHBKDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711230803512_UpdateDB2411.resx">
+      <DependentUpon>201711230803512_UpdateDB2411.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711231006341_UpdateDB24112.resx">
+      <DependentUpon>201711231006341_UpdateDB24112.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711231050584_UpdateDB24113.resx">
+      <DependentUpon>201711231050584_UpdateDB24113.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

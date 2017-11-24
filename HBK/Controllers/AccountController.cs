@@ -20,15 +20,15 @@ namespace HBK.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        private readonly ICommonService _CommonService;
+      
         private readonly IMembershipService _MembershipService;
-        private readonly IUsersPhotoService _UsersPhotoService;
+    
 
-        public AccountController(ICommonService CommonService, IMembershipService MembershipService, IUsersPhotoService UsersPhotoService)
+        public AccountController(IMembershipService MembershipService)
         {
-            _CommonService = CommonService;
+       
             _MembershipService = MembershipService;
-            _UsersPhotoService = UsersPhotoService;
+         
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -176,34 +176,7 @@ namespace HBK.Controllers
 
         private void InitDropDownlist(string MainSpecialtyType)
         {
-            var objDict = new Dictionary<string, string>();
-            foreach (var cultureInfo in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
-            {
-                var regionInfo = new RegionInfo(cultureInfo.Name);
-                if (!objDict.ContainsKey(regionInfo.EnglishName))
-                {
-                    objDict.Add(regionInfo.EnglishName, regionInfo.TwoLetterISORegionName.ToLower());
-                }
-            }
-            var obj = objDict.OrderBy(p => p.Key).ToArray();
-            ViewBag.ListCountries = obj.Select(c => new SelectListItem
-            {
-                Text = c.Key,
-                Value = c.Key
-            });
-            ViewBag.ListType = _CommonService.getAllSpecialtyType().ToList().Select(c => new SelectListItem
-            {
-                Text = c.ComName,
-                Value = c.ComCode
-            });
-            if (!string.IsNullOrEmpty(MainSpecialtyType))
-            {
-                ViewBag.ListSubType = _CommonService.getCommonById(MainSpecialtyType).ChildCommom.Select(c => new SelectListItem
-                {
-                    Text = c.ComName,
-                    Value = c.ComCode
-                });
-            }
+           
         }
 
         //
@@ -235,29 +208,7 @@ namespace HBK.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    _MembershipService.AddExtendUser(new ExtendAspNetUser
-                    {
-                        UserID = user.Id,
-                        KorName = model.FirstName + " " + model.LastName,
-                        EngName = model.FirstName + " " + model.LastName,
-                        SpecialtyType = model.SpecialtyType,
-                        SnsSite = model.SNSSite,
-                        CareerInfo = model.Career,
-                        CareerDuration = model.CareerDuration,
-                        SelfIntroduction = model.Introduction,
-                        Recommender = model.Recommender,
-                        RegistrationDate = DateTime.Now,
-                        LastLoginDate = DateTime.Now,
-                        SystemAdmin = false
-                    });
-                    _UsersPhotoService.AddUsersPhoto(new UsersPhoto
-                    {
-                        UserID = user.Id,
-                        UserPhtoFileLocationPath = Util.CreateUPhoto(user.Id, model.Photo),
-                        UserPhtoFileName = model.Photo.FileName,
-                        UserPhtoFileSize = model.Photo.ContentLength,
-                        UserPhtoFileType = model.Photo.ContentType
-                    });
+                  
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
@@ -515,14 +466,7 @@ namespace HBK.Controllers
         [AllowAnonymous]
         public JsonResult GetSpecialtyType(string MainSpecialtyType)
         {
-            if (!string.IsNullOrEmpty(MainSpecialtyType))
-            {
-                var SpecialtyTypes = _CommonService.getCommonById(MainSpecialtyType).ChildCommom;
-                if (SpecialtyTypes.Any())
-                {
-                    return Json(SpecialtyTypes.Select(c => new { value = c.ComCode, text = c.ComName }), JsonRequestBehavior.AllowGet);
-                }
-            }
+           
             return Json(null, JsonRequestBehavior.AllowGet);
         }
 
@@ -559,14 +503,7 @@ namespace HBK.Controllers
                     Tel = currentUser.PhoneNumber,
                     Address = currentUser.Address ?? "",
                     Country = currentUser.Country,
-                    OldPhoto = getAvatar(currentUser),
-                    MainSpecialtyType = currentUser.ExtendAspNetUser != null ? currentUser.ExtendAspNetUser.Common.ParentCommom.ComCode : string.Empty,
-                    SpecialtyType = currentUser.ExtendAspNetUser != null ? currentUser.ExtendAspNetUser.SpecialtyType : string.Empty,
-                    SNSSite = currentUser.ExtendAspNetUser != null ? currentUser.ExtendAspNetUser.SnsSite : string.Empty,
-                    Recommender = currentUser.ExtendAspNetUser != null ? currentUser.ExtendAspNetUser.Recommender : string.Empty,
-                    Introduction = currentUser.ExtendAspNetUser != null ? currentUser.ExtendAspNetUser.SelfIntroduction : string.Empty,
-                    Career = currentUser.ExtendAspNetUser != null ? currentUser.ExtendAspNetUser.CareerInfo : string.Empty,
-                    CareerDuration = currentUser.ExtendAspNetUser != null ? currentUser.ExtendAspNetUser.CareerDuration : 0,
+                    OldPhoto = getAvatar(currentUser)
                 },
                 IsEditing = true
             };
@@ -593,47 +530,8 @@ namespace HBK.Controllers
                     EditUser.PhoneNumber = model.EditAccount.Tel;
                     EditUser.Address = model.EditAccount.Address;
                     EditUser.Country = model.EditAccount.Country;
-                    if (EditUser.ExtendAspNetUser != null)
-                    {
-                        EditUser.ExtendAspNetUser.KorName = model.EditAccount.FirstName + " " + model.EditAccount.LastName;
-                        EditUser.ExtendAspNetUser.EngName = model.EditAccount.FirstName + " " + model.EditAccount.LastName;
-                        EditUser.ExtendAspNetUser.SpecialtyType = model.EditAccount.SpecialtyType;
-                        EditUser.ExtendAspNetUser.SnsSite = model.EditAccount.SNSSite;
-                        EditUser.ExtendAspNetUser.CareerInfo = model.EditAccount.Career;
-                        EditUser.ExtendAspNetUser.SelfIntroduction = model.EditAccount.Introduction;
-                        EditUser.ExtendAspNetUser.Recommender = model.EditAccount.Recommender;
-                        EditUser.ExtendAspNetUser.CareerDuration = model.EditAccount.CareerDuration;
-                        _MembershipService.Save();
-                    }
-                    else
-                    {
-                        _MembershipService.AddExtendUser(new ExtendAspNetUser
-                        {
-                            UserID = EditUser.Id,
-                            KorName = model.EditAccount.FirstName + " " + model.EditAccount.LastName,
-                            EngName = model.EditAccount.FirstName + " " + model.EditAccount.LastName,
-                            SpecialtyType = model.EditAccount.SpecialtyType,
-                            SnsSite = model.EditAccount.SNSSite,
-                            CareerInfo = model.EditAccount.Career,
-                            CareerDuration = model.EditAccount.CareerDuration,
-                            SelfIntroduction = model.EditAccount.Introduction,
-                            Recommender = model.EditAccount.Recommender,
-                            RegistrationDate = DateTime.Now,
-                            LastLoginDate = DateTime.Now,
-                            SystemAdmin = false
-                        });
-                    }
-                    if (model.EditAccount.Photo != null)
-                    {
-                        _UsersPhotoService.AddUsersPhoto(new UsersPhoto
-                        {
-                            UserID = EditUser.Id,
-                            UserPhtoFileLocationPath = Util.CreateUPhoto(EditUser.Id, model.EditAccount.Photo),
-                            UserPhtoFileName = model.EditAccount.Photo.FileName,
-                            UserPhtoFileSize = model.EditAccount.Photo.ContentLength,
-                            UserPhtoFileType = model.EditAccount.Photo.ContentType
-                        });
-                    }
+                 
+                
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -658,15 +556,7 @@ namespace HBK.Controllers
         private string getAvatar(ApplicationUser writer)
         {
             string avatar = Util.DefaultAvatar();
-            var Extend = writer.ExtendAspNetUser;
-            if (Extend != null)
-            {
-                var UsersPhoto = Extend.UsersPhotos.LastOrDefault();
-                if (UsersPhoto != null)
-                {
-                    avatar = UsersPhoto.UserPhtoFileLocationPath;
-                }
-            }
+          
             return avatar;
         }
 

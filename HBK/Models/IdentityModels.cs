@@ -37,23 +37,15 @@ namespace HBK.Models
         [StringLength(50)]
         public string Country { get; set; }
 
-        public virtual ExtendAspNetUser ExtendAspNetUser { get; set; }
     }
 
     public class HBKDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Community> Communities { get; set; }
-        public DbSet<CommunityAttachment> CommunityAttachments { get; set; }
-        public DbSet<CommunityComment> CommunityComments { get; set; }
-        public DbSet<CommentAttachment> CommentAttachments { get; set; }
-        public DbSet<ExtendAspNetUser> ExtendAspNetUsers { get; set; }
-        public DbSet<UsersPhoto> UsersPhotos { get; set; }
-        public DbSet<Common> Commons { get; set; }
-        public DbSet<Company> Companies { get; set; }
-        public DbSet<Project> Projects { get; set; }
-        public DbSet<ProjectMember> ProjectMembers { get; set; }
-        public DbSet<ProjectAttachment> ProjectAttachments { get; set; }
-        public DbSet<ProjectComment> ProjectComments { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductExtend> ProductExtends { get; set; }
+        public DbSet<ProductCategory> ProductCategorys { get; set; }
+        public DbSet<ProductCategoryExtend> ProductCategoryExtends { get; set; }
 
         public HBKDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

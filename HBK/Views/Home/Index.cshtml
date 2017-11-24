@@ -1,14 +1,16 @@
 ﻿@{
-    ViewBag.Title = "Home";
+    ViewBag.Title = "Trang chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/product-card-style.css")">
+@section styles{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/product-card-style.css")">
+}
 
 <div>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="topadd_bar"><a href="#"><img src="/Content/images/addbanner_728x90_V1.jpg" alt=""></a></div>
+            <div class="topadd_bar"><a href="#"><img src="/Content/images/addbanner_728x90_V1.jpg" alt="quảng cáo"></a></div>
         </div>
     </div>
     <div class="row">
@@ -16,48 +18,15 @@
             <div class="featured_slider">
                 <h2 class="featured_title">Nhóm sản phẩm</h2>
                 <div class="slick_slider">
-                    <div class="single_iteam">
-                        <img src="~/Content/images/thietbitruyendong.jpg" alt="Sản phẩm 1">
-                        <div class="carousel-caption slider_tittle">
-                            Thiết bị tự động hóa
+                    @foreach (var item in ViewBag.ListCategory)
+                    {
+                        <div role="button" class="single_iteam" id="@item.ProductCategoryId">
+                            <img src="@Url.Content(@item.ProductCategoryExtend.FilePath)" alt="Sản phẩm">
+                            <div class="carousel-caption slider_tittle">
+                                @item.ProductCategoryName
+                            </div>
                         </div>
-                        @*<h2><a class="slider_tittle" href="#">Fusce eu nulla semper porttitor felis sit amet</a></h2>*@
-                    </div>
-                    <div class="single_iteam">
-                        <img  src="~/Content/images/thietbitudong.jpg" alt="Sản phẩm 2">
-                        @*<h2><a class="slider_tittle" href="#">Fusce eu nulla semper porttitor felis sit amet</a></h2>*@
-                        <div class="carousel-caption slider_tittle">
-                            Thiết bị truyền động
-                        </div>
-                    </div>
-                    <div class="single_iteam">
-                        <img src="~/Content/images/bophandieukhien.jpg" alt="Sản phẩm 3">
-                        <div class="carousel-caption slider_tittle">
-                            Thiết bị và các bộ phân điều khiển khí nén, thủy lực
-                        </div>
-                        @*<h2><a class="slider_tittle" href="#">Fusce eu nulla semper porttitor felis sit amet</a></h2>*@
-                    </div>
-                    <div class="single_iteam">
-                        <img  src="~/Content/images/Bangtai1.jpg" alt="Sản phẩm 4">
-                        <div class="carousel-caption slider_tittle">
-                            Thiết bị cầm tay và thiết bị đo
-                        </div>
-                       @* <h2><a class="slider_tittle" href="#">Fusce eu nulla semper porttitor felis sit amet</a></h2>*@
-                    </div>
-                    <div class="single_iteam">
-                        <img src="~/Content/images/thietbido.jpg" alt="Sản phẩm 5">
-                        <div class="carousel-caption slider_tittle">
-                            Thiết kế/Lắp đặt hệ thống băng tải, Hệ thống tự động...
-                        </div>
-                        @*<h2><a class="slider_tittle" href="#">Fusce eu nulla semper porttitor felis sit amet</a></h2>*@
-                    </div>
-                    <div class="single_iteam">
-                        <img  src="~/Content/images/Maynenkhi1.jpg" alt="Sản phẩm 6">
-                        <div class="carousel-caption slider_tittle">
-                            Thiết bị nhà xưởng
-                        </div>
-                        @*<h2><a class="slider_tittle" href="#">Fusce eu nulla semper porttitor felis sit amet</a></h2>*@
-                    </div>
+                    }
                 </div>
             </div>
         </div>
@@ -67,63 +36,30 @@
         <div class="row">
             <div class="col-lg-7 col-md-7 col-sm-12 col-md-offset-1">
                 <div class="middle_content">
-                    <h2>Tin tức mới</h2>
-                    <ul class="cards">
-                        <li class="cards__item">
-                            <div class="card">
-                                <div class="text-center"  style="width:380px;height:277px;">
-                                    <img style="width:100%;height:100%;" src="~/Content/images/Maynenkhi1.jpg" />
+                    <h2>Sản phẩm nổi bật</h2>
+                    <ul class="cards" style="display: flex;justify-content: center;align-items:center;">
+                        @foreach (var item in ViewBag.ListHotProduct)
+                        {
+                            <li class="cards__item">
+                                <div class="card">
+                                    <div class="text-center" style="width:auto;height:200px;display: flex;justify-content: center;align-items: center;">
+                                        <img style="width:-webkit-fill-available;height:-webkit-fill-available;" src="@Url.Content(item.ProductExtend.FilePath)" />
+                                    </div>
+                                    <div class="card__content">
+                                        <div class="card__title text-center" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis; padding:5px 0px 13px 0px;font-weight:bold;">@item.ProductName</div>
+                                        <p style="font-size:11px !important;display:flex;justify-content:space-around;" class="card__text"><span class="timestamp"><i class="fa fa-clock-o" aria-hidden="true"></i> @item.CreatedDate.ToString("HH:mm:ss")</span><span class="comments">  <i class="fa fa-calendar" aria-hidden="true"></i> @item.CreatedDate.ToString("dd/MM/yyyy")</span><span class="comments">  <i class="fa fa-eye" aria-hidden="true"></i> @item.View</span></p>
+                                        <button role="button" class="btn btn--block card__btn">Xem thêm</button>
+                                    </div>
                                 </div>
-                                <div class="card__content">
-                                    <div class="card__title" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis; ">Máy nén khí</div>
-                                    <p style="font-size:11px !important;" class="card__text"><span class="timestamp"><i class="fa fa-clock-o"></i> 20:00:00</span><span class="comments">  <i class="fa fa-comments"></i><a href="#"> 29/10/2017</a></span></p>
-                                    <button class="btn btn--block card__btn">Xem thêm</button>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="cards__item">
-                            <div class="card">
-                                <div class="text-center" style="width:380px;height:277px;">
-                                    <img style="width:100%;height:100%;" src="~/Content/images/thietbitruyendong.jpg" />
-                                </div>
-                                <div class="card__content">
-                                    <div class="card__title" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis; ">Thiết bị truyền động</div>
-                                    <p style="font-size:11px !important;" class="card__text"><span class="timestamp"><i class="fa fa-clock-o"></i> 08:00:00</span><span class="comments">  <i class="fa fa-comments"></i><a href="#"> 29/10/2017</a></span></p>
-                                    <button class="btn btn--block card__btn">Xem thêm</button>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="cards__item">
-                            <div class="card">
-                                <div class="text-center"  style="width:380px;height:277px;">
-                                    <img style="width:100%;height:100%;" src="~/Content/images/thietbido.jpg" />
-                                </div>
-                                <div class="card__content">
-                                    <div class="card__title" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis; ">Thiết bị đo</div>
-                                    <p style="font-size:11px !important;" class="card__text"><span class="timestamp"><i class="fa fa-clock-o"></i> 14:00:00</span><span class="comments">  <i class="fa fa-comments"></i><a href="#"> 29/10/2017</a></span></p>
-                                    <button class="btn btn--block card__btn">Xem thêm</button>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="cards__item">
-                            <div class="card">
-                                <div class="text-center" style="width:380px;height:277px;">
-                                    <img style="width:100%;height:100%;" src="~/Content/images/550x400.jpg" />
-                                </div>
-                                <div class="card__content">
-                                    <div class="card__title" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis; ">Thiết bị đo</div>
-                                    <p style="font-size:11px !important;" class="card__text"><span class="timestamp"><i class="fa fa-clock-o"></i> 14:00:00</span><span class="comments">  <i class="fa fa-comments"></i><a href="#"> 29/10/2017</a></span></p>
-                                    <button class="btn btn--block card__btn">Xem thêm</button>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-12">
                 <div class="right_sidebar">
                     <div class="single_widget">
-                        <h2>Tin phổ biến</h2>
+                        <h2>Sản phẩm phổ biến</h2>
                         <ul class="ppost_nav wow fadeInDown">
                             <li>
                                 <div class="media">
@@ -150,3 +86,20 @@
         </div>
     </div>
 </div>
+
+
+@*@using (Html.BeginForm("SaveProduct","Home",FormMethod.Post,new { @role="form", @enctype = "multipart/form-data" }))
+    {
+        <input name="Files" type="file" multiple />
+        <button type="submit">Submit</button>
+    }*@
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.single_iteam').click(function () {
+                window.location.href = '@Url.Action("Index", "Product")?productCategoryId='+$(this).attr('id');
+            });
+        });
+    </script>
+}

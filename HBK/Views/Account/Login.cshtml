@@ -6,7 +6,7 @@
     ListLanguages.Add(new SelectListItem { Value = "en", Text = "English" });
 }
 
-<h2 class="text-center">@ViewBag.Title</h2>
+@*<h2 class="text-center">@ViewBag.Title</h2>
 <div class="row">
     <div class="col-md-offset-2 col-md-8">
         <div class="row">
@@ -53,14 +53,15 @@
                     </div>
                 }
             </div>
-            @*<div class="col-md-6">
-                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-            </div>*@
+
         </div>
     </div>
 </div>
 <br />
-<br />
+<br />*@
+@*<div class="col-md-6">
+        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+    </div>*@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
